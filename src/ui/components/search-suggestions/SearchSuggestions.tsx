@@ -1,7 +1,8 @@
 import * as Ariakit from "@ariakit/react";
 import { matchSorter } from "match-sorter";
-import { startTransition, useMemo, useState } from "react";
+import { startTransition, useEffect, useMemo, useState } from "react";
 import "./SearchSuggestions.css";
+import input from "@/input/input";
 
 interface SearchSuggestionsProps {
   list: string[];
@@ -21,7 +22,16 @@ export default function SearchSuggestions({ list, onSelect }: SearchSuggestionsP
     >
       <Ariakit.ComboboxLabel className="label">
       </Ariakit.ComboboxLabel>
-      <Ariakit.Combobox placeholder="Search" className="combobox" />
+      <Ariakit.Combobox 
+      placeholder="Search" 
+      className="combobox" 
+      onKeyDown={(event) => {
+        if (!list.includes(searchValue)) return;
+        if (event.key === "Enter") {
+          onSelect?.(searchValue);
+        }
+      }}
+       />
       <Ariakit.ComboboxPopover gutter={8} sameWidth className="popover">
         {matches.length ? (
           matches.map((value) => (
