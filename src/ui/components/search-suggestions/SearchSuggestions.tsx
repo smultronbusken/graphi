@@ -22,16 +22,15 @@ export default function SearchSuggestions({ list, onSelect }: SearchSuggestionsP
     >
       <Ariakit.ComboboxLabel className="label">
       </Ariakit.ComboboxLabel>
-      <Ariakit.Combobox placeholder="Search" className="combobox" 
-
-
-onKeyDown={(event) => {
-  if (event.key === "Enter") {
-    onSelect?.(searchValue);
-  }
-}}
-
-
+      <Ariakit.Combobox 
+      placeholder="Search" 
+      className="combobox" 
+      onKeyDown={(event) => {
+        if (!list.includes(searchValue)) return;
+        if (event.key === "Enter") {
+          onSelect?.(searchValue);
+        }
+      }}
        />
       <Ariakit.ComboboxPopover gutter={8} sameWidth className="popover">
         {matches.length ? (
