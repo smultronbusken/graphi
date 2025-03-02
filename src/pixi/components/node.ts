@@ -1,0 +1,179 @@
+import { animate } from "motion";
+import { GlowFilter } from "pixi-filters";
+import { ColorMatrixFilter, Container, ContainerEvents, EventEmitter, Graphics, PointData, Sprite } from "pixi.js";
+import TEXTURES from "../../util/asset-loader";
+import { Label } from "./label";
+import {  BaseAttributes, BaseNodeAttributes, State } from "@/graph/types";
+import { AnyEvent } from "../types";
+
+export interface NodeEvents {
+    positionChanged: { node: PixiNode, new: PointData; old: PointData };
+    stateChanged: { node: PixiNode, new: BaseAttributes["state"]; old: BaseAttributes["state"] };
+    hiddenChanged: { node: PixiNode, new: BaseAttributes["hidden"], old: BaseAttributes["hidden"] };
+}
+
+export class PixiNode {
+
+    public graphics: Container;
+
+    private circleContainer: Container;
+    private sprite: Sprite | undefined;
+    private circleMask: Graphics;
+    private circleBackground: Graphics;
+
+    private label: Label;
+
+    private attributes: BaseNodeAttributes
+
+    events: EventEmitter<NodeEvents & ContainerEvents<Container> & AnyEvent>;
+    private grayscaleFilter = new ColorMatrixFilter();
+    private glowFilter = new GlowFilter({
+        distance: 10,
+        outerStrength: 4,
+        innerStrength: 0,
+        color: 0xffd700,
+    });
+
+    private readonly circleRadius = 30;
+
+    center = () => ({
+        x: this.graphics.position.x,
+        y: this.graphics.position.y,
+    });
+
+    currentState = () => this.attributes.state;
+
+    constructor(public key: string, attributes: BaseNodeAttributes) {
+
+        this.events = new EventEmitter();
+        this.graphics = new Container({ label: this.key });
+        this.circleContainer = new Container({ label: this.key + "circle" });
+        this.graphics.addChild(this.circleContainer)
+
+        this.circleBackground = this.createCircleBackground();
+        this.circleMask = this.createCircleMask();
+        this.circleContainer.addChild(this.circleBackground);
+        this.circleContainer.addChild(this.circleMask);
+
+        this.sprite = this.createSprite(attributes.textureName);
+        if (this.sprite) {
+            this.sprite.mask = this.circleMask;
+            this.circleContainer.addChild(this.sprite);
+        }
+
+        this.label = new Label(this.key);
+        this.label.position.set(0, this.circleRadius + 15);
+        this.graphics.addChild(this.label);
+
+        this.graphics.eventMode = "dynamic";
+        this.events = this.graphics;
+
+        this.attributes = attributes
+        this.setAttributes(attributes)
+    }
+
+    private createCircleBackground(): Graphics {
+        const bg = new Graphics();
+        bg.circle(0, 0, this.circleRadius).fill({ color: 0xffffff, alpha: 0.2 })
+        return bg;
+    }
+
+    private createCircleMask(): Graphics {
+        const mask = new Graphics();
+        mask.circle(0, 0, this.circleRadius).fill(0xffffff)
+        return mask;
+    }
+
+    private createSprite(textureName: string): Sprite {
+        const texture = TEXTURES.get(textureName || "bunny");
+        const sprite = new Sprite({ texture, label: "sprite" });
+
+        sprite.anchor.set(0.5);
+        sprite.position.set(0, 0);
+
+        const maxSize = this.circleRadius * 2 * 0.8;
+        const scale = Math.min(maxSize / sprite.width, maxSize / sprite.height);
+        sprite.scale.set(scale);
+
+        return sprite;
+    }
+
+    public onHoverStart() {
+        const { state, hidden } = this.attributes
+        if (state === "inactive" || hidden)
+            return;
+
+        this.setScale(1.5)
+    }
+
+    public onHoverStop() {
+        const { state, hidden } = this.attributes
+        if (state === "inactive" || hidden)
+            return;
+        this.setScale(1)
+    }
+
+    public setScale(newScale: number, duration = 0.1) {
+        animate(
+            this.circleContainer.scale,
+            { x: newScale, y: newScale },
+            { duration }
+        );
+        animate(
+            this.label.position,
+            { x: this.label.position.x, y: this.circleRadius * newScale + 15 },
+            { duration }
+        );
+    }
+
+    public setAttributes(attributes: BaseNodeAttributes) {
+        const { state, hidden, x, y } = attributes
+        this.setPosition({ x, y })
+        
+        if (this.attributes.hidden !== hidden) {
+            this.setHidden(hidden)
+        }
+
+        if (this.attributes.state !== state) {
+            this.setState(state)
+        }
+
+        this.attributes = { ...attributes }
+    }
+
+    public setState(state: State) {
+        switch (state) {
+            case "normal":
+                this.graphics.zIndex = 1;
+
+                animate(this.graphics, { alpha: 1 }, { duration: 0.1 });
+
+                this.setScale(1);
+                this.circleContainer.filters = [];
+                break;
+            case "active":
+                this.graphics.zIndex = 10;
+                this.graphics.alpha = 1;
+                this.circleContainer.filters = [this.glowFilter];
+                break;
+            case "inactive":
+                this.setScale(0.6);
+                animate(this.graphics, { alpha: 0.5 }, { duration: 0.4 });
+                this.circleContainer.filters = [this.grayscaleFilter];
+                this.grayscaleFilter.desaturate();
+                break;
+        }
+    }
+
+    public setPosition(pos: PointData) {
+        const { x: oldX, y: oldY } = this.attributes
+        const { x: newX, y: newY } = pos
+        this.graphics.position.set(newX, newY);
+        this.events.emit("positionChanged", { x: oldX, y: oldY }, { x: newX, y: newY }, this.key)
+    }
+
+    public setHidden(hidden: boolean) {
+        this.graphics.visible = !hidden
+    }
+
+}

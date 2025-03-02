@@ -1,0 +1,8 @@
+.overlay {
+    pointer-events: none;
+    z-index: 10;
+}
+
+.pointer-events {
+    pointer-events: auto;
+}
