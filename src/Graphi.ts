@@ -28,8 +28,8 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
         this.graph = options.graph;
         this.container = new Container({ label: "graph" });
 
-        this.edgeLayer = new Container({ label: "edges" });
-        this.nodeLayer = new Container({ label: "nodes" });
+        this.edgeLayer = new Container({ label: "edges", isRenderGroup: true });
+        this.nodeLayer = new Container({ label: "nodes", isRenderGroup: true });
 
         this.container.addChild(this.edgeLayer);
         this.container.addChild(this.nodeLayer);

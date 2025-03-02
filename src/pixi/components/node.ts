@@ -1,9 +1,9 @@
 import { animate } from "motion";
 import { GlowFilter } from "pixi-filters";
-import { ColorMatrixFilter, Container, ContainerEvents, EventEmitter, Graphics, PointData, Sprite } from "pixi.js";
+import { ColorMatrixFilter, Container, ContainerEvents, EventEmitter, Graphics, GraphicsContext, PointData, Sprite } from "pixi.js";
 import TEXTURES from "../../util/asset-loader";
 import { Label } from "./label";
-import {  BaseAttributes, BaseNodeAttributes, State } from "@/graph/types";
+import { BaseAttributes, BaseNodeAttributes, State } from "@/graph/types";
 import { AnyEvent } from "../types";
 
 export interface NodeEvents {
@@ -18,7 +18,6 @@ export class PixiNode {
 
     private circleContainer: Container;
     private sprite: Sprite | undefined;
-    private circleMask: Graphics;
     private circleBackground: Graphics;
 
     private label: Label;
@@ -51,13 +50,10 @@ export class PixiNode {
         this.graphics.addChild(this.circleContainer)
 
         this.circleBackground = this.createCircleBackground();
-        this.circleMask = this.createCircleMask();
         this.circleContainer.addChild(this.circleBackground);
-        this.circleContainer.addChild(this.circleMask);
 
         this.sprite = this.createSprite(attributes.textureName);
         if (this.sprite) {
-            this.sprite.mask = this.circleMask;
             this.circleContainer.addChild(this.sprite);
         }
 
@@ -65,9 +61,10 @@ export class PixiNode {
         this.label.position.set(0, this.circleRadius + 15);
         this.graphics.addChild(this.label);
 
-        this.graphics.eventMode = "dynamic";
+        this.graphics.eventMode = "static";
         this.events = this.graphics;
 
+        this.circleContainer.cacheAsTexture(true)
         this.attributes = attributes
         this.setAttributes(attributes)
     }
@@ -76,12 +73,6 @@ export class PixiNode {
         const bg = new Graphics();
         bg.circle(0, 0, this.circleRadius).fill({ color: 0xffffff, alpha: 0.2 })
         return bg;
-    }
-
-    private createCircleMask(): Graphics {
-        const mask = new Graphics();
-        mask.circle(0, 0, this.circleRadius).fill(0xffffff)
-        return mask;
     }
 
     private createSprite(textureName: string): Sprite {
@@ -102,7 +93,6 @@ export class PixiNode {
         const { state, hidden } = this.attributes
         if (state === "inactive" || hidden)
             return;
-
         this.setScale(1.5)
     }
 
@@ -110,6 +100,7 @@ export class PixiNode {
         const { state, hidden } = this.attributes
         if (state === "inactive" || hidden)
             return;
+
         this.setScale(1)
     }
 
@@ -122,14 +113,14 @@ export class PixiNode {
         animate(
             this.label.position,
             { x: this.label.position.x, y: this.circleRadius * newScale + 15 },
-            { duration }
+            { duration },
         );
     }
 
     public setAttributes(attributes: BaseNodeAttributes) {
         const { state, hidden, x, y } = attributes
         this.setPosition({ x, y })
-        
+
         if (this.attributes.hidden !== hidden) {
             this.setHidden(hidden)
         }
