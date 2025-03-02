@@ -55,7 +55,7 @@ const Root = () => {
         camera: camera,
         pixi: app
       }
-      const graph = await generateGraph("animals")
+      const graph = await generateGraph("random")
       const pixiGraph = new Graphi({
         graph: graph,
         drag: new Drag(context)
@@ -67,7 +67,7 @@ const Root = () => {
     init()
   }, []);
 
-  if (!pixiContextData?.camera || !pixiContextData.pixi) return <div>Loading...</div>; // Optional: Show a loading state
+  if (!pixiContextData?.camera || !pixiContextData.pixi) return <div>Loading...</div>;
 
   return (
     <StrictMode>
