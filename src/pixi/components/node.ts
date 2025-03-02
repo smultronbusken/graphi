@@ -158,7 +158,7 @@ export class PixiNode {
                 break;
             case "inactive":
                 this.setScale(0.6);
-                animate(this.graphics, { alpha: 0.5 }, { duration: 0.4 });
+                animate(this.graphics, { alpha: 0.3 }, { duration: 0.4 });
                 this.circleContainer.filters = [this.grayscaleFilter];
                 this.grayscaleFilter.desaturate();
                 break;
