@@ -8,6 +8,7 @@ import SearchSuggestions from "./components/search-suggestions/SearchSuggestions
 import SearchNode from "./components/search-node/SearchNode";
 import SearchPaths from "./components/search-path/SearchPaths";
 import ShortestPath from "./components/search-path/ShortestPath";
+import SingleSource from "./components/search-path/singleSource";
 
 export default function Overlay() {
     const graphi = useContext(GraphiContext);
@@ -47,6 +48,11 @@ export default function Overlay() {
                 <Box className="pointer-events" maxWidth={"200px"}>
                     <Card id="layout-container" className="pointer-events" m="4" >
                         <ShortestPath />
+                    </Card>
+                </Box>
+                <Box className="pointer-events" maxWidth={"200px"}>
+                    <Card id="layout-container" className="pointer-events" m="4" >
+                        <SingleSource />
                     </Card>
                 </Box>
             </Section>
