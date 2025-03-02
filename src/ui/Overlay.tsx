@@ -6,6 +6,7 @@ import LayoutGroup from "./components/controls/LayoutGroup";
 import General from "./components/controls/General";
 import SearchSuggestions from "./components/search-suggestions/SearchSuggestions";
 import SearchNode from "./components/search-node/SearchNode";
+import FilterControls from "./components/pixi/filter/FilterControls";
 
 export default function Overlay() {
     const graphi = useContext(GraphiContext);
@@ -23,19 +24,24 @@ export default function Overlay() {
             className="overlay"
             id="overlay"
         >
-            <Section size="1" dir="row" mt="40px">
-                <Box maxWidth={"140px"}>
+            <Section size="1" dir="row" mt="40px" >
+                <Box maxWidth={"140px"} className="pointer-events">
                     <Card id="layout-container" className="pointer-events" m="4" >
                         <LayoutGroup />
                     </Card>
                 </Box>
-                <Box maxWidth={"200px"}>
-                    <Card id="layout-container" className="pointer-events" m="4" >
+                <Box maxWidth={"200px"} className="pointer-events">
+                    <Card id="layout-container" m="4" >
                         <General />
                     </Card>
                 </Box>
-                <Box className="pointer-events" maxWidth={"200px"}>
+                <Box maxWidth={"200px"} className="pointer-events">
                     <SearchNode />
+                </Box>
+                <Box className="pointer-events" maxWidth={"200px"}>
+                    <Card id="layout-container" m="4" >
+                        <FilterControls />
+                    </Card>
                 </Box>
             </Section>
         </Grid>

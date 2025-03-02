@@ -55,7 +55,7 @@ const Root = () => {
         camera: camera,
         pixi: app
       }
-      const graph = await generateGraph("random")
+      const graph = await generateGraph("animals")
       const pixiGraph = new Graphi({
         graph: graph,
         drag: new Drag(context)
