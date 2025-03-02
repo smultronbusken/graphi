@@ -3,25 +3,25 @@ import { GraphiContext, PixiContext } from "@/main";
 import SearchSuggestions from "../search-suggestions/SearchSuggestions";
 import { Button, Flex } from "@radix-ui/themes";
 import { getPaths } from "@/graph/path";
+import { singleSource } from "graphology-shortest-path/dijkstra";
 
-export default function SearchPaths() {
+export default function SingleSource() {
     const graphi = useContext(GraphiContext);
     const app = useContext(PixiContext);
 
-    const [startNode, setStartNode] = useState<string | null>(null);
-    const [endNode, setEndNode] = useState<string | null>(null);
+    const [sourceNode, setSourceNode] = useState<string | null>(null);
 
     if (!graphi || !app) return "loading";
 
     const searchPath = () => {
-        if (!startNode || !endNode) {
+        if (!sourceNode) {
             console.warn("Please select both start and end nodes.");
             return;
         }
-        const edgePaths = getPaths(startNode, endNode, graphi.graph)
         graphi.hideAll()
-        for (const edgePath of edgePaths) {
-            graphi.expandEdgePath(edgePath)
+        const result = singleSource(graphi.graph, sourceNode)
+        for (const path of Object.values(result)) {
+            graphi.expandPath(path)
         }
     };
 
@@ -32,9 +32,8 @@ export default function SearchPaths() {
 
     return (
         <Flex direction="column" gap="3">
-            <SearchSuggestions list={list} onSelect={setStartNode} />
-            <SearchSuggestions list={list} onSelect={setEndNode} />
-            <Button onClick={searchPath} disabled={!startNode || !endNode}>
+            <SearchSuggestions list={list} onSelect={setSourceNode} />
+            <Button onClick={searchPath} disabled={!sourceNode}>
                 Search Paths
             </Button>
         </Flex>
