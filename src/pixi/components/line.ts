@@ -46,7 +46,7 @@ export class Line {
             case "inactive":
                 this.line.filters = [this.grayscaleFilter];
                 this.grayscaleFilter.desaturate();
-                this.line.stroke({ width: 3, color: 0xaaaaaa, alpha: 0.5 });
+                this.line.stroke({ width: 1, color: 0xaaaaaa, alpha: 0.5 });
                 break;
         }
     }
