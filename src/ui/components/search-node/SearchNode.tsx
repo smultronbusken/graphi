@@ -2,7 +2,6 @@ import { useContext, useMemo } from "react";
 import { GraphiContext, PixiContext } from "@/main";
 import SearchSuggestions from "../search-suggestions/SearchSuggestions";
 import { Point } from "pixi.js";
-import input from "@/input/input";
 
 export default function SearchNode() {
     const graphi = useContext(GraphiContext);
