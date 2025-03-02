@@ -14,6 +14,12 @@ export interface NodeEvents {
 
 export class PixiNode {
 
+    private SCALE = {
+        NORMAL: 1,
+        HOVER: 1.5,
+        INACTIVE: .6
+    }
+
     public graphics: Container;
 
     private circleContainer: Container;
@@ -42,6 +48,8 @@ export class PixiNode {
     });
 
     currentState = () => this.attributes.state;
+
+    private hovering: boolean = false;
 
     constructor(public key: string, attributes: BaseNodeAttributes) {
 
@@ -102,15 +110,16 @@ export class PixiNode {
         const { state, hidden } = this.attributes
         if (state === "inactive" || hidden)
             return;
-
-        this.setScale(1.5)
+        this.hovering = true;
+        this.setScale(this.SCALE.HOVER)
     }
 
     public onHoverStop() {
         const { state, hidden } = this.attributes
         if (state === "inactive" || hidden)
             return;
-        this.setScale(1)
+        this.hovering = false;
+        this.setScale(this.SCALE.NORMAL)
     }
 
     public setScale(newScale: number, duration = 0.1) {
@@ -148,7 +157,10 @@ export class PixiNode {
 
                 animate(this.graphics, { alpha: 1 }, { duration: 0.1 });
 
-                this.setScale(1);
+                if (!this.hovering)
+                {
+                    this.setScale(this.SCALE.NORMAL);
+                }
                 this.circleContainer.filters = [];
                 break;
             case "active":
@@ -157,7 +169,7 @@ export class PixiNode {
                 this.circleContainer.filters = [this.glowFilter];
                 break;
             case "inactive":
-                this.setScale(0.6);
+                this.setScale(this.SCALE.INACTIVE);
                 animate(this.graphics, { alpha: 0.5 }, { duration: 0.4 });
                 this.circleContainer.filters = [this.grayscaleFilter];
                 this.grayscaleFilter.desaturate();
