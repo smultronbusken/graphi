@@ -281,8 +281,7 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
 
     public expandEdge(edge: string) {
         this.graph.setEdgeAttribute(edge, "state", "normal")
-        const source = this.graph.source(edge);
-        const target = this.graph.target(edge);
+        const [source, target] = this.graph.extremities(edge);
 
         this.expand(source)
         this.expand(target)
