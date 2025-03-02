@@ -2,9 +2,9 @@ import { useContext, useMemo, useState } from "react";
 import { GraphiContext, PixiContext } from "@/main";
 import SearchSuggestions from "../search-suggestions/SearchSuggestions";
 import { Button, Flex } from "@radix-ui/themes";
-import { getPaths } from "@/graph/path";
+import { getPaths, shortestPath } from "@/graph/path";
 
-export default function SearchPath() {
+export default function ShortestPath() {
     const graphi = useContext(GraphiContext);
     const app = useContext(PixiContext);
 
@@ -18,13 +18,11 @@ export default function SearchPath() {
             console.warn("Please select both start and end nodes.");
             return;
         }
-        const edgePaths = getPaths(startNode, endNode, graphi.graph)
+        const path = shortestPath(startNode, endNode, graphi.graph)
+        console.log(path)
+        if (!path) return
         graphi.hideAll()
-        for (const edgePath of edgePaths) {
-            for (const edge of edgePath) {
-                graphi.activeEdge(edge)
-            }
-        }
+        graphi.expandPath(path)
     };
 
     const list = useMemo(() => {
