@@ -261,6 +261,15 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
         this.graph.setNodeAttribute(node.key, "state", "active")
     }
 
+    public activeEdge(edge: string) {
+        this.graph.setEdgeAttribute(edge, "state", "normal")
+        const source = this.graph.source(edge);
+        const target = this.graph.target(edge);
+
+        this.expand(source)
+        this.expand(target)
+    }
+
     public expand(key: string) {
         this.graph.setNodeAttribute(key, "hidden", false);
         this.graph.setNodeAttribute(key, "state", "normal");

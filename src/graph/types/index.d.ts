@@ -18,3 +18,5 @@ export interface SupervisedLayout<O> {
     tick(graph: Graph, options?: O): void
     stop(): void
 }
+
+export type GraphiGraph = DirectedGraph<BaseNodeAttributes, BaseEdgeAttributes>
