@@ -2,7 +2,7 @@ import { useContext, useMemo, useState } from "react";
 import { GraphiContext, PixiContext } from "@/main";
 import SearchSuggestions from "../search-suggestions/SearchSuggestions";
 import { Button, Flex } from "@radix-ui/themes";
-import { getPath } from "@/graph/path";
+import { getPaths } from "@/graph/path";
 
 export default function SearchPath() {
     const graphi = useContext(GraphiContext);
@@ -18,7 +18,7 @@ export default function SearchPath() {
             console.warn("Please select both start and end nodes.");
             return;
         }
-        const edgePaths = getPath(startNode, endNode, graphi.graph)
+        const edgePaths = getPaths(startNode, endNode, graphi.graph)
         graphi.hideAll()
         for (const edgePath of edgePaths) {
             for (const edge of edgePath) {
