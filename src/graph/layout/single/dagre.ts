@@ -1,17 +1,19 @@
 import Graph from "graphology";
 import dagre from "@dagrejs/dagre";
-import { Layout } from "@/graph/types";
+import { BaseEdgeAttributes, BaseNodeAttributes, Layout } from "@/graph/types";
 
 
 export class DagreLayout implements Layout<dagre.configUnion> {
-    public run(graph: Graph, options?: dagre.configUnion) {
+    public run(graph: Graph<BaseNodeAttributes, BaseEdgeAttributes>, options?: dagre.configUnion) {
         var g = new dagre.graphlib.Graph();
         g.setGraph({});
         g.setDefaultEdgeLabel(function () { return {}; });
-        graph.forEachNode(n => {
+        graph.forEachNode((n, attr) => {
+            if (attr.hidden) return
             g.setNode(n, { width: 40, height: 40 })
         })
-        graph.forEachEdge((n, atr, s, t) => {
+        graph.forEachEdge((n, atr, s, t, sa, ta) => {
+            if (sa.hidden || ta.hidden) return
             g.setEdge(s, t)
         })
         dagre.layout(g, options);
