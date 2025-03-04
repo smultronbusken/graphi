@@ -5,11 +5,17 @@ import { PixiEdge } from './pixi/components/edge';
 import { PixiNode } from './pixi/components/node';
 import input from '@/input/input';
 import { BaseEdgeAttributes, BaseNodeAttributes, State } from '@/graph/types';
+import EventEmitter from 'events';
+
 
 export interface GraphOptions<NodeAttributes extends BaseNodeAttributes = BaseNodeAttributes, EdgeAttributes extends BaseEdgeAttributes = BaseEdgeAttributes> {
     graph: AbstractGraph<NodeAttributes, EdgeAttributes>;
     drag: Drag
 }
+
+type GraphiEvents = {
+    onSelectedChange: [string];
+};
 
 export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttributes, EdgeAttributes extends BaseEdgeAttributes = BaseEdgeAttributes> {
 
@@ -23,6 +29,9 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
 
     public drag: Drag;
 
+    public events: EventEmitter<GraphiEvents> = new EventEmitter();
+
+    public selected: string | null = null;
 
     constructor(options: GraphOptions<NodeAttributes, EdgeAttributes>) {
         this.graph = options.graph;
@@ -94,6 +103,9 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
     private onNodeAttributesUpdate({ key, attributes }: AttributeUpdatePayload<NodeAttributes>) {
         const node = this.keyToNode(key)
         node.setAttributes(attributes)
+        if (key === this.selected)
+            this.events.emit("onSelectedChange", this.selected)
+
     }
 
     private onEdgeAttributesUpdate({ key, attributes }: AttributeUpdatePayload<EdgeAttributes>) {
@@ -123,6 +135,8 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
         if (attr.hidden || attr.state === "inactive")
             return
         this.drag.start(node);
+        this.selected = node.key
+        this.events.emit("onSelectedChange", this.selected)
     }
 
     private onDragMove(node: PixiNode, point: PointData) {
