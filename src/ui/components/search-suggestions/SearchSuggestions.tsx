@@ -12,7 +12,7 @@ interface SearchSuggestionsProps {
 export default function SearchSuggestions({ list, onSelect }: SearchSuggestionsProps) {
   const [searchValue, setSearchValue] = useState("");
 
-  const matches = useMemo(() => matchSorter(list, searchValue), [list, searchValue]);
+  const matches = useMemo(() => matchSorter(list, searchValue).slice(0, 5), [list, searchValue]);
   
   return (
     <Ariakit.ComboboxProvider
