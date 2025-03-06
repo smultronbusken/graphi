@@ -6,3 +6,9 @@
 .pointer-events {
     pointer-events: auto;
 }
+
+.box-fit-content {
+    display: inline-block;
+    width: auto;
+    max-width: fit-content;
+  }
