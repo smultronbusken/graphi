@@ -1,5 +1,7 @@
 import {
+    Button,
   Container,
+  DropdownMenu,
   Flex,
   Heading,
   IconButton,
@@ -40,13 +42,11 @@ export default function Header() {
         </Flex>
 
         <div className={"HeaderProductLinksContainer"}>
-          <SegmentedControl.Root defaultValue="inbox">
-            <SegmentedControl.Item value="inbox" variant="surface">
+          <SegmentedControl.Root defaultValue="explorer" variant="surface">
+            <SegmentedControl.Item value="explorer">
               Explorer
             </SegmentedControl.Item>
-            <SegmentedControl.Item value="drafts" variant="surface">
-              Data
-            </SegmentedControl.Item>
+            <SegmentedControl.Item value="data">Data</SegmentedControl.Item>
           </SegmentedControl.Root>
         </div>
 
@@ -60,6 +60,16 @@ export default function Header() {
           right="0"
           pr="4"
         >
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger>
+              <Button size="3" variant="ghost" color="gray">
+                <Text size={"1"}>Help</Text>
+              </Button>
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content>
+              <DropdownMenu.Item shortcut="⌘ I">Guide</DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Root>
           <Tooltip content="View GitHub">
             <IconButton asChild size="3" variant="ghost" color="gray">
               <a href={githubLink} target="_blank" aria-label="View GitHub">

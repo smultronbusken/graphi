@@ -101,6 +101,7 @@ export function NodeAttributes() {
                     color="gray"
                     variant="ghost"
                     onClick={onClick}
+                    
                   >
                     <ThickArrowRightIcon />
                   </IconButton>

@@ -1,39 +1,36 @@
-import * as React from "react";
 import {
-  CheckIcon,
-  ChevronRightIcon,
-  DotFilledIcon,
-  FileIcon,
-} from "@radix-ui/react-icons";
-import "./Menubar.css";
-import {
-  Box,
-  Button,
-  Card,
-  DropdownMenu,
-  Flex,
-  Grid,
-  IconButton,
-  Section,
-  Text,
+    Button,
+    DropdownMenu,
+    Flex,
+    Text
 } from "@radix-ui/themes";
-
-const RADIO_ITEMS = ["Andy", "Benoît", "Luis"];
-const CHECK_ITEMS = ["Always Show Bookmarks Bar", "Always Show Full URLs"];
-
+import "./Menubar.css";
+1
 const Menubar = () => {
   return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger>
-        <IconButton asChild size="3" variant="ghost" color="gray">
-          <FileIcon />
-        </IconButton>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        <DropdownMenu.Item>Import</DropdownMenu.Item>
-        <DropdownMenu.Item>Export</DropdownMenu.Item>
-      </DropdownMenu.Content>
-    </DropdownMenu.Root>
+    <Flex align="center" gap="4">
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger>
+          <Button size="3" variant="ghost" color="gray">
+            <Text size={"1"}>File</Text>
+          </Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item shortcut="⌘ I">Import</DropdownMenu.Item>
+          <DropdownMenu.Item shortcut="⌘ S">Export</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger>
+          <Button size="3" variant="ghost" color="gray">
+            <Text size={"1"}>Graph</Text>
+          </Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item shortcut="⌘ I">Search</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+    </Flex>
   );
 };
 
