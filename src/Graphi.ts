@@ -17,6 +17,8 @@ type GraphiEvents = {
     onSelectedChange: [string];
 };
 
+
+// TODO make a cache of graph.nodes() and only update it when any nodes has been added or removed as the serach suggestion boxes ui uses that alot i think(?)
 export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttributes, EdgeAttributes extends BaseEdgeAttributes = BaseEdgeAttributes> {
 
     graph: AbstractGraph<NodeAttributes, EdgeAttributes>;

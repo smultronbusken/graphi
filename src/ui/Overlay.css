@@ -11,4 +11,5 @@
     display: inline-block;
     width: auto;
     max-width: fit-content;
-  }
+    min-width: 9rem;
+}

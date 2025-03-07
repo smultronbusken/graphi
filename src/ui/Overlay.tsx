@@ -1,31 +1,12 @@
-import {
-  Grid,
-  Card,
-  Heading,
-  Text,
-  Box,
-  Container,
-  Section,
-  Flex,
-  Button,
-  Separator,
-} from "@radix-ui/themes";
-import { useContext, useState } from "react";
 import { GraphiContext } from "@/main";
+import { Box, Card, Flex, Grid, Section, Text } from "@radix-ui/themes";
+import { useContext, useState } from "react";
 import "./Overlay.css";
-import LayoutGroup from "./components/controls/LayoutGroup";
-import General from "./components/controls/General";
-import SearchSuggestions from "./components/search-suggestions/SearchSuggestions";
-import SearchNode from "./components/search-node/SearchNode";
-import { NodeAttributes } from "./components/node/NodeAttributes";
-import { Collapsible } from "radix-ui";
-import {
-  CaretDownIcon,
-  CaretUpIcon,
-  Cross2Icon,
-  RowSpacingIcon,
-} from "@radix-ui/react-icons";
 import { CollapsibleSection } from "./components/collapsable-section/CollapsibleSection";
+import General from "./components/controls/General";
+import LayoutGroup from "./components/controls/LayoutGroup";
+import { NodeAttributes } from "./components/node/NodeAttributes";
+import SearchNode from "./components/search-node/SearchNode";
 
 export default function Overlay() {
   const graphi = useContext(GraphiContext);
@@ -53,7 +34,7 @@ export default function Overlay() {
               </CollapsibleSection>
             </Card>
           </Box>
-          <Box maxWidth={"200px"} className="box-fit-content">
+          <Box className="box-fit-content">
             <Card id="layout-container" className="pointer-events" m="4">
               <CollapsibleSection title="General">
                 <General />
@@ -62,7 +43,7 @@ export default function Overlay() {
           </Box>
           <Box className="pointer-events box-fit-content">
             <Card id="layout-container" className="pointer-events" m="4">
-              <CollapsibleSection title="Layout">
+              <CollapsibleSection title="Search">
                 <SearchNode />
               </CollapsibleSection>
             </Card>
@@ -71,7 +52,7 @@ export default function Overlay() {
       </Section>
       <Section size="1" dir="row" mt="40px">
         <Flex justify={"end"}>
-          <Box className="pointer-events" maxWidth={"200px"} m="4">
+          <Box className="pointer-events box-fit-content" m="4" p="4">
             <NodeAttributes />
           </Box>
         </Flex>

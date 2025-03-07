@@ -22,7 +22,7 @@ export function CollapsibleSection({
       onOpenChange={setOpen}
       className="CollapsibleRoot" // your custom class if needed
     >
-      <Flex dir="row" align="center">
+      <Flex dir="row" align="center" justify="between">
         <Heading size="1" mr={"4px"}>
           {title}
         </Heading>
