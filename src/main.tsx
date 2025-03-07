@@ -11,6 +11,7 @@ import { Graphi } from "./Graphi.ts"
 import { loadAssets } from "./util/asset-loader.ts"
 import generateGraph from "./util/generate-graph.ts"
 import { Theme } from "@radix-ui/themes"
+import input from "./input/input.ts"
 
 export type PixiContextData = {
   pixi: Application<Renderer>
@@ -63,8 +64,22 @@ const Root = () => {
       camera.addChild(pixiGraph.container)
       setPixiContextData(context)
       setGraphi(pixiGraph)
+
+      const handleSpaceKeyDown = (event: KeyboardEvent, pixiGraph: Graphi, camera: Camera) => {
+
+        if (event.ctrlKey && !event.shiftKey && !event.altKey) {
+          if (!pixiGraph.selected) return
+          const { x, y } = pixiGraph.graph.getNodeAttributes(pixiGraph.selected)
+          camera.moveTo(x, y)
+          event.preventDefault();
+        }
+
+      }
+
+      input.keyboard.on("Space", (e) => handleSpaceKeyDown(e, pixiGraph, camera));
     }
     init()
+    return () => {}
   }, []);
 
   if (!pixiContextData?.camera || !pixiContextData.pixi) return <div>Loading...</div>;

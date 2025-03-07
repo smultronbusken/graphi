@@ -67,7 +67,7 @@ export default function Header() {
               </Button>
             </DropdownMenu.Trigger>
             <DropdownMenu.Content>
-              <DropdownMenu.Item shortcut="⌘ I">Guide</DropdownMenu.Item>
+              <DropdownMenu.Item >Cassieeee</DropdownMenu.Item>
             </DropdownMenu.Content>
           </DropdownMenu.Root>
           <Tooltip content="View GitHub">

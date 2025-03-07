@@ -4,12 +4,16 @@ import Canvas from './ui/Canvas';
 import Overlay from './ui/Overlay';
 
 function App() {
+
+  
+
   return (
     <>
       <Header />
       <div id="app-container">
         <Canvas />
         <Overlay />
+        
       </div>
       <Footer />
     </>

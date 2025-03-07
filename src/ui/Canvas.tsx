@@ -1,12 +1,13 @@
-import { PixiContext } from "@/main";
+import { GraphiContext, PixiContext } from "@/main";
 import { useContext, useEffect } from "react";
 import "./Canvas.css";
+import input from "@/input/input";
 
 export default function Canvas() {
   const app = useContext(PixiContext);
 
   useEffect(() => {
-    if (!app) return;
+    if (!app ) return;
 
     const container = document.getElementById("pixi-container");
     if (container && !container.hasChildNodes()) {
