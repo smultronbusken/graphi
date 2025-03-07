@@ -1,3 +1,5 @@
 https://www.radix-ui.com/themes/docs/components/context-menu
 Replace combobox with something else
 When searching, move camera to first suggestions
+https://www.radix-ui.com/themes/docs/components/kbd
+https://github.com/radix-ui/website/blob/132bbb2ad05aa743cfd65f01bdc6233cd3d4b025/components/PrimitivesSearchDesktop.tsx

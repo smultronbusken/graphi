@@ -24,7 +24,7 @@ export default function Overlay() {
       columns={"2"}
       className="overlay"
       id="overlay"
-      mt="90px"
+      mt="var(--header-height)"
     >
       <Box dir="row">
         <Flex direction={"column"}>
