@@ -35,17 +35,19 @@ export default function Header() {
           <Text className="header-text" weight={"light"}>
             phi
           </Text>
-          <Separator orientation="vertical" ml="4" mr="4"  />
-          <Menubar  />
+          <Separator orientation="vertical" ml="4" mr="4" />
+          <Menubar />
         </Flex>
 
         <div className={"HeaderProductLinksContainer"}>
-          <TabNav.Root>
-            <TabNav.Link href="#explore">Explore</TabNav.Link>
-            <TabNav.Link href="#data" active>
+          <SegmentedControl.Root defaultValue="inbox">
+            <SegmentedControl.Item value="inbox" variant="surface">
+              Explorer
+            </SegmentedControl.Item>
+            <SegmentedControl.Item value="drafts" variant="surface">
               Data
-            </TabNav.Link>
-          </TabNav.Root>
+            </SegmentedControl.Item>
+          </SegmentedControl.Root>
         </div>
 
         <Flex
