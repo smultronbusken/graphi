@@ -7,11 +7,13 @@ import input from "@/input/input";
 interface SearchSuggestionsProps {
   list: string[];
   onSelect?: (selected: string) => void;
+  onValueChange?: (searchString: string, searchValue: string[]) => void;
 }
 
 export default function SearchSuggestions({
   list,
   onSelect,
+  onValueChange,
 }: SearchSuggestionsProps) {
   const [searchValue, setSearchValue] = useState("");
 
@@ -19,6 +21,10 @@ export default function SearchSuggestions({
     () => matchSorter(list, searchValue).slice(0, 5),
     [list, searchValue]
   );
+
+  useEffect(() => {
+    onValueChange?.(searchValue, matches);
+  }, [searchValue]);
 
   return (
     <Ariakit.ComboboxProvider
