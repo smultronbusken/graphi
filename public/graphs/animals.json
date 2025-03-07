@@ -1,17 +1,17 @@
 {
     "nodes": [
-        { "key": "Bunny1", "attributes": { "x": 100, "y": 100, "textureName": "bunny" } },
-        { "key": "Bunny2", "attributes": { "x": 300, "y": 150, "textureName": "bunny" } },
-        { "key": "Bird1", "attributes": { "x": 500, "y": 200, "textureName": "bird" } },
-        { "key": "Bird2", "attributes": { "x": 700, "y": 250, "textureName": "bird" } },
-        { "key": "Bunny3", "attributes": { "x": 200, "y": 400, "textureName": "bunny" } },
-        { "key": "Bunny4", "attributes": { "x": 600, "y": 500, "textureName": "bunny" } },
-        { "key": "Bird3", "attributes": { "x": 400, "y": 600, "textureName": "bird" } },
-        { "key": "Bird4", "attributes": { "x": 800, "y": 650, "textureName": "bird" } },
-        { "key": "Bunny5", "attributes": { "x": 500, "y": 100, "textureName": "bunny" } },
-        { "key": "Bunny6", "attributes": { "x": 900, "y": 300, "textureName": "bunny" } },
-        { "key": "Bird5", "attributes": { "x": 300, "y": 700, "textureName": "bird" } },
-        { "key": "Bird6", "attributes": { "x": 700, "y": 800, "textureName": "bird" } }
+        { "key": "Bunny1", "attributes": { "x": 100, "y": 100, "type": "bunny" } },
+        { "key": "Bunny2", "attributes": { "x": 300, "y": 150, "type": "bunny" } },
+        { "key": "Bird1", "attributes": { "x": 500, "y": 200, "type": "bird" } },
+        { "key": "Bird2", "attributes": { "x": 700, "y": 250, "type": "bird" } },
+        { "key": "Bunny3", "attributes": { "x": 200, "y": 400, "type": "bunny" } },
+        { "key": "Bunny4", "attributes": { "x": 600, "y": 500, "type": "bunny" } },
+        { "key": "Bird3", "attributes": { "x": 400, "y": 600, "type": "bird" } },
+        { "key": "Bird4", "attributes": { "x": 800, "y": 650, "type": "bird" } },
+        { "key": "Bunny5", "attributes": { "x": 500, "y": 100, "type": "bunny" } },
+        { "key": "Bunny6", "attributes": { "x": 900, "y": 300, "type": "bunny" } },
+        { "key": "Bird5", "attributes": { "x": 300, "y": 700, "type": "bird" } },
+        { "key": "Bird6", "attributes": { "x": 700, "y": 800, "type": "bird" } }
     ],
     "edges": [
         { "source": "Bunny1", "target": "Bunny2" },

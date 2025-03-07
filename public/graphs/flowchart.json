@@ -1,11 +1,11 @@
 {
     "nodes": [
-      { "key": "Start", "attributes": { "x": 400, "y": 50, "textureName": "bunny" } },
-      { "key": "Step1", "attributes": { "x": 400, "y": 150, "textureName": "bunny" } },
-      { "key": "Decision", "attributes": { "x": 400, "y": 250, "textureName": "bird" } },
-      { "key": "OptionA", "attributes": { "x": 250, "y": 350, "textureName": "bunny" } },
-      { "key": "OptionB", "attributes": { "x": 550, "y": 350, "textureName": "bunny" } },
-      { "key": "End", "attributes": { "x": 400, "y": 450, "textureName": "bird" } }
+      { "key": "Start", "attributes": { "x": 400, "y": 50, "type": "bunny" } },
+      { "key": "Step1", "attributes": { "x": 400, "y": 150, "type": "bunny" } },
+      { "key": "Decision", "attributes": { "x": 400, "y": 250, "type": "bird" } },
+      { "key": "OptionA", "attributes": { "x": 250, "y": 350, "type": "bunny" } },
+      { "key": "OptionB", "attributes": { "x": 550, "y": 350, "type": "bunny" } },
+      { "key": "End", "attributes": { "x": 400, "y": 450, "type": "bird" } }
     ],
     "edges": [
       { "source": "Start", "target": "Step1" },

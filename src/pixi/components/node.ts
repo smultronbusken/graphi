@@ -60,7 +60,7 @@ export class PixiNode {
         this.circleBackground = this.createCircleBackground();
         this.circleContainer.addChild(this.circleBackground);
 
-        this.sprite = this.createSprite(attributes.textureName);
+        this.sprite = this.createSprite(attributes.type);
         if (this.sprite) {
             this.circleContainer.addChild(this.sprite);
         }
@@ -83,8 +83,8 @@ export class PixiNode {
         return bg;
     }
 
-    private createSprite(textureName: string): Sprite {
-        const texture = TEXTURES.get(textureName || "bunny");
+    private createSprite(type: string): Sprite {
+        const texture = TEXTURES.get(type || "bunny");
         const sprite = new Sprite({ texture, label: "sprite" });
 
         sprite.anchor.set(0.5);

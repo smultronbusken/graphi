@@ -57,7 +57,7 @@ function generateRandomFlowChart(): Graph<BaseNodeAttributes, BaseEdgeAttributes
     graph.addNode("Start", {
         x: canvasWidth / 2,
         y: 50,
-        textureName: "bunny",
+        type: "bunny",
         state: "normal",
         hidden: false
     });
@@ -69,8 +69,8 @@ function generateRandomFlowChart(): Graph<BaseNodeAttributes, BaseEdgeAttributes
             const spacing = canvasWidth / (nodeCount + 1);
             const x = spacing * (j + 1);
             const y = 50 + i * verticalSpacing;
-            const textureName = Math.random() < 0.5 ? "bunny" : "bird";
-            graph.addNode(key, { x, y, textureName, state: "normal", hidden: false });
+            const type = Math.random() < 0.5 ? "bunny" : "bird";
+            graph.addNode(key, { x, y, type, state: "normal", hidden: false });
             levelNodes.push(key);
         }
         levels.push(levelNodes);
@@ -79,7 +79,7 @@ function generateRandomFlowChart(): Graph<BaseNodeAttributes, BaseEdgeAttributes
     graph.addNode("End", {
         x: canvasWidth / 2,
         y: 50 + (levelCount - 1) * verticalSpacing,
-        textureName: "bunny",
+        type: "bunny",
         state: "normal",
         hidden: false
     });

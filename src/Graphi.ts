@@ -105,10 +105,13 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
     private onNodeAttributesUpdate({ key, attributes }: AttributeUpdatePayload<NodeAttributes>) {
         const node = this.keyToNode(key)
         node.setAttributes(attributes)
-        if (key === this.selected)
-            this.events.emit("onSelectedChange", this.selected)
-
     }
+
+    public setSelected(key: string) {
+        this.selected = key
+        this.events.emit("onSelectedChange", this.selected)
+    }
+
 
     private onEdgeAttributesUpdate({ key, attributes }: AttributeUpdatePayload<EdgeAttributes>) {
         const edge = this.keyToEdge(key)
@@ -137,8 +140,8 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
         if (attr.hidden || attr.state === "inactive")
             return
         this.drag.start(node);
-        this.selected = node.key
-        this.events.emit("onSelectedChange", this.selected)
+        this.setSelected(node.key)
+
     }
 
     private onDragMove(node: PixiNode, point: PointData) {

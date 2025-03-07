@@ -14,7 +14,12 @@ export class Camera extends Viewport {
     }
 
     public moveTo(x: number, y: number) {
-        const { x: wx, y: wy } = this.toWorld(new Point(x, y))
-        this.moveCenter(wx + this.position.x, wy + this.position.y)
+        const global = this.toWorld(new Point(x, y));
+        const scale = this.scale;
+        this.moveCenter(
+            global.x * scale.x + this.position.x,
+            global.y * scale.y + this.position.y
+        );
     }
+
 }
