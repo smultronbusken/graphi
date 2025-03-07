@@ -45,7 +45,7 @@ function generateRandomFlowChart(): Graph<BaseNodeAttributes, BaseEdgeAttributes
         multi: false,
         allowSelfLoops: false
     });
-    const maxNode = 4
+    const maxNode = 10
     const maxLevel = 100
     const getRandomInt = (min: number, max: number) =>
         Math.floor(Math.random() * (max - min + 1)) + min;
@@ -113,7 +113,7 @@ function createRandomGraph(): Graph<BaseNodeAttributes, BaseEdgeAttributes, Base
     return randomGraph
 }
 
-export default async function generateGraph(type: "random" | "animals" | "flowchart" | 'randomFlowchart'): Promise<Graph<BaseNodeAttributes, BaseEdgeAttributes>> {
+export default async function generateGraph(type: "random" | "animals" | "flowchart" | 'randomFlowchart' | string): Promise<Graph<BaseNodeAttributes, BaseEdgeAttributes>> {
     switch (type) {
         case "animals":
             return await createGraphFromFile('/graphs/animals.json')
@@ -123,5 +123,8 @@ export default async function generateGraph(type: "random" | "animals" | "flowch
             return createRandomGraph()
         case 'randomFlowchart':
             return generateRandomFlowChart()
+        default:
+            return generateRandomFlowChart()
+            
     }
 }

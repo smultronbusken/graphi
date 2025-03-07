@@ -17,6 +17,7 @@ export default function SearchNode({
     graphi.expand(key);
     const { x, y } = graphi.graph.getNodeAttributes(key);
     app.camera.moveTo(x, y);
+    app.camera.zoomTo()
     graphi.setSelected(key);
     onSelect?.(key);
   };
@@ -26,6 +27,7 @@ export default function SearchNode({
     if (!searchValue[0]) return;
     const { x, y } = graphi.graph.getNodeAttributes(searchValue[0]);
     app.camera.moveTo(x, y);
+    app.camera.zoomTo()
   };
 
   const list = useMemo(() => {

@@ -12,11 +12,9 @@ import { Search } from "./components/search/Search";
 export default function Overlay() {
     const graphi = useContext(GraphiContext);
     if (!graphi) return <Text>Loading Graphi...</Text>;
-    const [open, setOpen] = useState(false);
 
     return (
         <SideNav>
-
             <Box pt="4" px="3" pb="9">
                 <Box mb="4" pr="4">
                     <Search />
@@ -42,8 +40,5 @@ export default function Overlay() {
                 </Grid>
             </Box>
         </SideNav>
-
-
-
     );
 }

@@ -21,7 +21,7 @@ type GraphiEvents = {
 // TODO make a cache of graph.nodes() and only update it when any nodes has been added or removed as the serach suggestion boxes ui uses that alot i think(?)
 export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttributes, EdgeAttributes extends BaseEdgeAttributes = BaseEdgeAttributes> {
 
-    graph: AbstractGraph<NodeAttributes, EdgeAttributes>;
+    graph!: AbstractGraph<NodeAttributes, EdgeAttributes>;
     private keyNodeMap = new Map<string, PixiNode>();
     private edgeKeyMap = new Map<string, PixiEdge>();
 
@@ -36,7 +36,7 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
     public selected: string | null = null;
 
     constructor(options: GraphOptions<NodeAttributes, EdgeAttributes>) {
-        this.graph = options.graph;
+
         this.container = new Container({ label: "graph" });
 
         this.edgeLayer = new Container({ label: "edges", isRenderGroup: true });
@@ -50,15 +50,33 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
         this.drag.events.on("stop", (node: PixiNode, _) => this.onDragStop(node));
         this.drag.events.on("start", (node: PixiNode, _) => this.onDragStart(node));
 
-        this.graph.forEachNode(this.createNode.bind(this));
-        this.graph.forEachEdge(this.createEdge.bind(this));
-
-        this.graph.on('nodeAttributesUpdated', this.onNodeAttributesUpdate.bind(this));
-        this.graph.on('edgeAttributesUpdated', this.onEdgeAttributesUpdate.bind(this));
+        this.setGraph(options.graph)
     }
 
     destroy() {
         this.drag.destroy();
+    }
+
+    public setGraph(graph: AbstractGraph<NodeAttributes, EdgeAttributes>) {
+        if (this.graph) {
+            graph.off('nodeAttributesUpdated', this.onNodeAttributesUpdate.bind(this));
+            graph.off('edgeAttributesUpdated', this.onEdgeAttributesUpdate.bind(this));
+            while(this.nodeLayer.children[0]) { 
+                this.nodeLayer.removeChild(this.nodeLayer.children[0]);
+            }
+            while(this.edgeLayer.children[0]) { 
+                this.edgeLayer.removeChild(this.edgeLayer.children[0]);
+            }
+            this.keyNodeMap.clear()
+            this.edgeKeyMap.clear()
+        }
+
+        graph.forEachNode(this.createNode.bind(this));
+        graph.forEachEdge(this.createEdge.bind(this));
+        graph.on('nodeAttributesUpdated', this.onNodeAttributesUpdate.bind(this));
+        graph.on('edgeAttributesUpdated', this.onEdgeAttributesUpdate.bind(this));
+        this.graph = graph;
+
     }
 
     private async createNode(nodeKey: string, attributes: NodeAttributes) {

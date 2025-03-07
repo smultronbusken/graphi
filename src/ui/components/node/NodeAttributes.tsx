@@ -44,6 +44,7 @@ export function NodeAttributes() {
   const onClick = () => {
     const { x, y } = graphi.graph.getNodeAttributes(node?.key);
     app.camera.moveTo(x, y);
+    app.camera.zoomTo()
     
   };
 
@@ -52,7 +53,7 @@ export function NodeAttributes() {
   return (
     <Card>
       <Flex direction={"column"} align={"center"} justify={"center"}>
-        <Heading size="2">Node</Heading>
+        <Heading size="2">Selected</Heading>
         <Separator orientation="horizontal" size="4" mt="2" mb="2" />
 
         <DataList.Root>

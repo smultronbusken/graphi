@@ -71,6 +71,11 @@ const Root = () => {
           if (!pixiGraph.selected) return
           const { x, y } = pixiGraph.graph.getNodeAttributes(pixiGraph.selected)
           camera.moveTo(x, y)
+          camera.zoomTo()
+          event.preventDefault();
+        }
+        if (!event.ctrlKey && !event.shiftKey && !event.altKey) {
+          camera.moveTo(0, 0)
           event.preventDefault();
         }
 
