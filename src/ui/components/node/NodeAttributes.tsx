@@ -25,7 +25,7 @@ export function NodeAttributes() {
 
     if (!node) return <></>
     return (
-        <Box>
+        <Card>
             <div key={"key"}>
                 <Heading as="h4" size="1"> ID </Heading>
                 <Text> {node.key} </Text>
@@ -38,6 +38,6 @@ export function NodeAttributes() {
                 <Heading as="h4" size="1"> Y </Heading>
                 <Text> {Math.floor(node.y)} </Text>
             </div>
-        </Box>
+        </Card>
     )
 }

@@ -24,39 +24,34 @@ export default function Overlay() {
       columns={"2"}
       className="overlay"
       id="overlay"
+      mt="90px"
     >
-      <Section size="1" dir="row" mt="40px">
+      <Box dir="row">
         <Flex direction={"column"}>
-          <Box maxWidth={"140px"} className="box-fit-content">
-            <Card id="layout-container" className="pointer-events" m="4">
-              <CollapsibleSection title="Layout">
-                <LayoutGroup />
-              </CollapsibleSection>
-            </Card>
-          </Box>
-          <Box className="box-fit-content">
-            <Card id="layout-container" className="pointer-events" m="4">
-              <CollapsibleSection title="General">
-                <General />
-              </CollapsibleSection>
-            </Card>
-          </Box>
-          <Box className="pointer-events box-fit-content">
-            <Card id="layout-container" className="pointer-events" m="4">
-              <CollapsibleSection title="Search">
-                <SearchNode />
-              </CollapsibleSection>
-            </Card>
-          </Box>
+          <Section className="box-fit-content pointer-events" m="4" p="4">
+            <CollapsibleSection title="Layout">
+              <LayoutGroup />
+            </CollapsibleSection>
+          </Section>
+          <Section className="box-fit-content pointer-events" m="4" p="4">
+            <CollapsibleSection title="General">
+              <General />
+            </CollapsibleSection>
+          </Section>
+          <Section className="box-fit-content pointer-events" m="4" p="4">
+            <CollapsibleSection title="Search">
+              <SearchNode />
+            </CollapsibleSection>
+          </Section>
         </Flex>
-      </Section>
-      <Section size="1" dir="row" mt="40px">
+      </Box>
+      <Box dir="row" mt="40px">
         <Flex justify={"end"}>
-          <Box className="pointer-events box-fit-content" m="4" p="4">
+          <Section className="box-fit-content pointer-events" m="4" p="4">
             <NodeAttributes />
-          </Box>
+          </Section>
         </Flex>
-      </Section>
+      </Box>
     </Grid>
   );
 }

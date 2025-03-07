@@ -20,7 +20,7 @@ export function CollapsibleSection({
     <Collapsible.Root
       open={open}
       onOpenChange={setOpen}
-      className="CollapsibleRoot" // your custom class if needed
+      className="CollapsibleRoot"
     >
       <Flex dir="row" align="center" justify="between">
         <Heading size="1" mr={"4px"}>
