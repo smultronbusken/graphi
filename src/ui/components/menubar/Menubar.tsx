@@ -57,6 +57,10 @@ const Menubar = () => {
         event.preventDefault();
         showAll()
       }
+      if (!event.ctrlKey && !event.shiftKey && event.altKey) {
+        event.preventDefault();
+        hideAllExceptSelected()
+      }
     }
 
 
@@ -78,7 +82,7 @@ const Menubar = () => {
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>New</DropdownMenu.SubTrigger>
             <DropdownMenu.SubContent>
-              <DropdownMenu.Item>Import new</DropdownMenu.Item>
+              <DropdownMenu.Item>Import from file</DropdownMenu.Item>
               <DropdownMenu.Separator />
               <DropdownMenu.Sub>
                 <DropdownMenu.SubTrigger>Existing</DropdownMenu.SubTrigger>
@@ -107,8 +111,8 @@ const Menubar = () => {
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
           <DropdownMenu.Item onClick={hideAll} shortcut="Ctrl H">Hide all</DropdownMenu.Item>
-          <DropdownMenu.Item onClick={hideAllExceptSelected} shortcut="Ctrl Shift H">Hide all except selected</DropdownMenu.Item>
-          <DropdownMenu.Item onClick={showAll} shortcut="Ctrl Alt H">Show all</DropdownMenu.Item>
+          <DropdownMenu.Item onClick={showAll} shortcut="Ctrl Shift H">Show all</DropdownMenu.Item>
+          <DropdownMenu.Item onClick={hideAllExceptSelected} shortcut="Alt H">Hide all except selected</DropdownMenu.Item>
           <DropdownMenu.Separator />
           <DropdownMenu.Item onClick={goToSelected} shortcut="Ctrl Space">Go to selected</DropdownMenu.Item>
 
@@ -121,7 +125,6 @@ const Menubar = () => {
           </Button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
-          <DropdownMenu.Item onClick={hideAllExceptSelected} shortcut="Ctrl N">Create node</DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Root>
     </Flex>

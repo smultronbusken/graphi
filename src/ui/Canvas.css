@@ -1,5 +1,14 @@
 canvas {
     max-width: 100%;
     max-height: 100vh;
-    
+
 }
+
+/* In your global CSS (or any file that loads after the library/theme CSS) */
+.rt-ContextMenuContent[data-state="closed"] {
+    animation-name: none !important;
+    animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important;
+    animation-timing-function: linear !important;
+  }
+  

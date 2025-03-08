@@ -26,5 +26,4 @@ export class Camera extends Viewport {
         this.setZoom(scale)
     }
 
-
 }

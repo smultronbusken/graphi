@@ -26,15 +26,23 @@ function App() {
             zIndex: 1,
             right: 0,
             bottom: 0,
+            pointerEvents: "none",
           }}
+          p="4"
         >
-          <aside>
+          <aside style={{
+            pointerEvents: "all",
+            height: "fit-content"
+
+          }}  >
             <Box
               asChild
               px="5"
+
               aria-labelledby="site-quick-nav-heading"
               style={{
                 paddingBlock: 68,
+                pointerEvents: "all",
               }}
             >
               <NodeAttributes />
