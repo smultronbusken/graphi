@@ -15,9 +15,8 @@ export interface GraphOptions<NodeAttributes extends BaseNodeAttributes = BaseNo
 }
 
 type GraphiEvents = {
-    onSelectedChange: [string];
+    onSelectedChange: [string[]];
 };
-
 
 // TODO make a cache of graph.nodes() and only update it when any nodes has been added or removed as the serach suggestion boxes ui uses that alot i think(?)
 export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttributes, EdgeAttributes extends BaseEdgeAttributes = BaseEdgeAttributes> {
@@ -34,7 +33,7 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
 
     public events: EventEmitter<GraphiEvents> = new EventEmitter();
 
-    public selected: string | null = null;
+    public selected: string[] = [];
 
     constructor(options: GraphOptions<NodeAttributes, EdgeAttributes>) {
 
@@ -56,6 +55,8 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
         this.drag.events.on("move", this.onDragMove.bind(this));
         this.drag.events.on("stop", (node: PixiNode, _) => this.onDragStop(node));
         this.drag.events.on("start", (node: PixiNode, _) => this.onDragStart(node));
+
+        input.keyboard.on("Escape", (_) => this.setSelected())
 
         this.setGraph(options.graph)
     }
@@ -105,7 +106,7 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
         })
 
         events.on("pointerenter", (e) => containerToNode(e.target)?.onHoverStart());
-        events.on("pointerdown", (e) => this.onNodeClick(containerToNode(e.target)));
+        events.on("mousedown", (e) => this.onNodeClick(containerToNode(e.target)));
         events.on("pointerleave", (e) => containerToNode(e.target)?.onHoverStop());
 
         this.nodeLayer.addChild(node.graphics);
@@ -140,8 +141,23 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
         node.setAttributes(attributes)
     }
 
-    public setSelected(key: string) {
-        this.selected = key
+    public setSelected(...keys: string[]) {
+        for (const key of this.selected) {
+            const node = this.keyToNode(key)
+            node.setSelected(false)
+        }
+        for (const key of keys) {
+            const node = this.keyToNode(key)
+            node.setSelected(true)
+        }
+        this.selected = [...keys]
+        this.events.emit("onSelectedChange", this.selected)
+    }
+
+    public addSelected(key: string) {
+        const node = this.keyToNode(key)
+        node.setSelected(true)
+        this.selected?.push(key)
         this.events.emit("onSelectedChange", this.selected)
     }
 
@@ -172,6 +188,13 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
         }
         if (attr.hidden || attr.state === "inactive")
             return
+
+        if (input.keyboard.isPressed("ShiftLeft")) {
+            this.expand(node.key)
+            this.addSelected(node.key)
+            this.drag.start(node);
+            return
+        }
         this.drag.start(node);
         this.setSelected(node.key)
 

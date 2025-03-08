@@ -36,5 +36,6 @@ export class Label extends Container {
         background.fill({ color: 0x000000, alpha: 0.2 });
         this.addChild(background);
         this.addChild(textObj);
+        this.zIndex = 10
     }
 }

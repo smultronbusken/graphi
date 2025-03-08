@@ -1,10 +1,11 @@
 import { animate } from "motion";
-import { GlowFilter } from "pixi-filters";
+import { GlowFilter, OutlineFilter } from "pixi-filters";
 import { ColorMatrixFilter, Container, ContainerEvents, EventEmitter, Graphics, GraphicsContext, PointData, Sprite } from "pixi.js";
 import TEXTURES from "../../util/asset-loader";
 import { Label } from "./label";
 import { BaseAttributes, BaseNodeAttributes, State } from "@/graph/types";
 import { AnyEvent } from "../types";
+import { Badge } from "@radix-ui/themes";
 
 export interface NodeEvents {
     positionChanged: { node: PixiNode, new: PointData; old: PointData };
@@ -52,6 +53,9 @@ export class PixiNode {
 
     private hovering: boolean = false;
 
+    public outlineFilter: OutlineFilter
+    public outlineCircle: Graphics
+
     constructor(public key: string, attributes: BaseNodeAttributes) {
 
         this.events = new EventEmitter();
@@ -71,12 +75,34 @@ export class PixiNode {
         this.label.position.set(0, this._radius + 15);
         this.graphics.addChild(this.label);
 
+        this.outlineFilter = new OutlineFilter({
+            thickness: 2,
+            alpha: 1,
+            color: 0xffd700,
+            knockout: true  // <--- important!
+        });
+        this.outlineCircle = new Graphics();
+        this.outlineCircle.circle(0, 0, this._radius)
+            .fill({ color: 0xffffff, alpha: 1 });
+            this.outlineCircle.filters = [this.outlineFilter];
+        this.circleContainer.addChild(this.outlineCircle);
+        this.setSelected(false)
+
+
         this.graphics.eventMode = "static";
         this.events = this.graphics;
 
         //this.circleContainer.cacheAsTexture(true)
         this.attributes = attributes
         this.setAttributes(attributes)
+    }
+
+    public setSelected(selected: boolean) {
+        this.outlineFilter.enabled = selected
+        this.outlineCircle.visible = selected
+        if (selected) {
+
+        }
     }
 
     private createCircleBackground(): Graphics {
@@ -147,9 +173,7 @@ export class PixiNode {
         switch (state) {
             case "normal":
                 this.graphics.zIndex = 1;
-
                 animate(this.graphics, { alpha: 1 }, { duration: 0.1 });
-
                 if (!this.hovering) {
                     this.setScale(this.SCALE.NORMAL);
                 }

@@ -29,10 +29,16 @@ export function NodeAttributes() {
   if (!graphi || !app) return "loading";
 
   useEffect(() => {
-    function handleSelectedChange(key: string) {
-      const attributes = graphi?.graph.getNodeAttributes(key);
+    function handleSelectedChange(keys: string[]) {
+      console.log(keys)
+      if (keys.length === 0) {
+        setNode(undefined)
+        return
+      }
+      const firstNode = keys[keys.length-1]!
+      const attributes = graphi?.graph.getNodeAttributes(firstNode);
       if (!attributes) return;
-      const attributesWithKey = { ...attributes, key };
+      const attributesWithKey = { ...attributes, key: firstNode };
       setNode(attributesWithKey);
     }
     graphi.events.on("onSelectedChange", handleSelectedChange);
@@ -45,7 +51,7 @@ export function NodeAttributes() {
     const { x, y } = graphi.graph.getNodeAttributes(node?.key);
     app.camera.moveTo(x, y);
     app.camera.zoomTo()
-    
+
   };
 
   if (!node) return <></>;
@@ -102,7 +108,7 @@ export function NodeAttributes() {
                     color="gray"
                     variant="ghost"
                     onClick={onClick}
-                    
+
                   >
                     <ThickArrowRightIcon />
                   </IconButton>
