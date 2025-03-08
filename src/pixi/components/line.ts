@@ -26,9 +26,7 @@ export class Line {
         this.line.clear();
         this.line.moveTo(x1, y1);
 
-        const cpX = (x1 + x2) / 2;
-        const cpY = (y1 + y2) / 2 - 20;
-        this.line.quadraticCurveTo(cpX, cpY, x2, y2);
+        this.line.lineTo(x2, y2);
 
         this.applyStateStyle(state);
     }

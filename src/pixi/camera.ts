@@ -23,7 +23,7 @@ export class Camera extends Viewport {
     }
 
     public zoomTo(scale: number = 1) {
-        this.setZoom(scale)
+        this.setZoom(scale, true)
     }
 
 }

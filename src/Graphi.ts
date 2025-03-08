@@ -61,10 +61,10 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
         if (this.graph) {
             graph.off('nodeAttributesUpdated', this.onNodeAttributesUpdate.bind(this));
             graph.off('edgeAttributesUpdated', this.onEdgeAttributesUpdate.bind(this));
-            while(this.nodeLayer.children[0]) { 
+            while (this.nodeLayer.children[0]) {
                 this.nodeLayer.removeChild(this.nodeLayer.children[0]);
             }
-            while(this.edgeLayer.children[0]) { 
+            while (this.edgeLayer.children[0]) {
                 this.edgeLayer.removeChild(this.edgeLayer.children[0]);
             }
             this.keyNodeMap.clear()
@@ -88,6 +88,14 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
 
         const events = node.events;
         events.on("positionChanged", this.onNodePosChange.bind(this))
+        events.on("changed", (n) => {
+            this.graph.forEachEdge(n.key, (edgeKey) => {
+                const edge = this.edgeKeyMap.get(edgeKey);
+                if (edge) {
+                    edge.draw();
+                }
+            });
+        })
 
         events.on("pointerenter", (e) => containerToNode(e.target)?.onHoverStart());
         events.on("pointerdown", (e) => this.onNodeClick(containerToNode(e.target)));

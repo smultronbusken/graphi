@@ -10,6 +10,7 @@ export interface NodeEvents {
     positionChanged: { node: PixiNode, new: PointData; old: PointData };
     stateChanged: { node: PixiNode, new: BaseAttributes["state"]; old: BaseAttributes["state"] };
     hiddenChanged: { node: PixiNode, new: BaseAttributes["hidden"], old: BaseAttributes["hidden"] };
+    changed: { node: PixiNode };
 }
 
 export class PixiNode {
@@ -39,7 +40,8 @@ export class PixiNode {
         color: 0xffd700,
     });
 
-    private readonly circleRadius = 30;
+    public readonly _radius = 30;
+    public radius = () => this.circleContainer.scale.x * 30;
 
     center = () => ({
         x: this.graphics.position.x,
@@ -66,7 +68,7 @@ export class PixiNode {
         }
 
         this.label = new Label(this.key);
-        this.label.position.set(0, this.circleRadius + 15);
+        this.label.position.set(0, this._radius + 15);
         this.graphics.addChild(this.label);
 
         this.graphics.eventMode = "static";
@@ -79,7 +81,7 @@ export class PixiNode {
 
     private createCircleBackground(): Graphics {
         const bg = new Graphics();
-        bg.circle(0, 0, this.circleRadius).fill({ color: 0xffffff, alpha: 0.2 })
+        bg.circle(0, 0, this._radius).fill({ color: 0xffffff, alpha: 0.2 })
         return bg;
     }
 
@@ -90,7 +92,7 @@ export class PixiNode {
         sprite.anchor.set(0.5);
         sprite.position.set(0, 0);
 
-        const maxSize = this.circleRadius * 2 * 0.8;
+        const maxSize = this._radius * 2 * 0.8;
         const scale = Math.min(maxSize / sprite.width, maxSize / sprite.height);
         sprite.scale.set(scale);
 
@@ -117,11 +119,11 @@ export class PixiNode {
         animate(
             this.circleContainer.scale,
             { x: newScale, y: newScale },
-            { duration }
+            { duration, onUpdate: (_) => this.events.emit("changed", this) }
         );
         animate(
             this.label.position,
-            { x: this.label.position.x, y: this.circleRadius * newScale + 15 },
+            { x: this.label.position.x, y: this._radius * newScale + 15 },
             { duration },
         );
     }
@@ -148,8 +150,7 @@ export class PixiNode {
 
                 animate(this.graphics, { alpha: 1 }, { duration: 0.1 });
 
-                if (!this.hovering)
-                {
+                if (!this.hovering) {
                     this.setScale(this.SCALE.NORMAL);
                 }
                 this.circleContainer.filters = [];
