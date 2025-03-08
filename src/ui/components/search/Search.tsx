@@ -22,7 +22,6 @@ export const Search = () => {
     React.useEffect(() => {
 
         const handleKeyDown = (event: KeyboardEvent) => {
-            console.log(event)
             const isSlashKey = event.key === "/";
             if ((isSlashKey)) {
                 triggerRef.current?.click();

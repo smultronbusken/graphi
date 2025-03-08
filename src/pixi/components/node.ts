@@ -51,7 +51,7 @@ export class PixiNode {
 
     currentState = () => this.attributes.state;
 
-    private hovering: boolean = false;
+    public hovering: boolean = false;
 
     public outlineFilter: OutlineFilter
     public outlineFilterSecondary: OutlineFilter
@@ -150,7 +150,7 @@ export class PixiNode {
         return sprite;
     }
 
-    public onHoverStart() {
+    public startHoverEffects() {
         const { state, hidden } = this.attributes
         if (state === "inactive" || hidden)
             return;
@@ -158,9 +158,9 @@ export class PixiNode {
         this.setScale(this.SCALE.HOVER)
     }
 
-    public onHoverStop() {
+    public stopHoverEffects() {
         const { state, hidden } = this.attributes
-        if (state === "inactive" || hidden)
+        if (state === "inactive" || hidden || !this.hovering)
             return;
         this.hovering = false;
         this.setScale(this.SCALE.NORMAL)

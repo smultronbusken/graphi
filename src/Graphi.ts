@@ -74,6 +74,7 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
             if (this.secondarySelected && !this.didRightClickOnNode) {
                 const secondary = this.keyToNode(this.secondarySelected)
                 secondary.setSecondary(false)
+                secondary.stopHoverEffects()
                 this.secondarySelected = null
                 this.events.emit("onSecondarySelectedChange", this.secondarySelected)
             }
@@ -87,6 +88,7 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
             if (this.secondarySelected) {
                 const secondary = this.keyToNode(this.secondarySelected)
                 secondary.setSecondary(false)
+                secondary.stopHoverEffects()
                 this.secondarySelected = null
                 this.events.emit("onSecondarySelectedChange", this.secondarySelected)
             }
@@ -140,9 +142,14 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
             });
         })
 
-        events.on("pointerenter", (e) => containerToNode(e.target)?.onHoverStart());
+        events.on("pointerenter", (e) => containerToNode(e.target)?.startHoverEffects());
         events.on("mousedown", (e) => this.onNodeClick(containerToNode(e.target)));
-        events.on("pointerleave", (e) => containerToNode(e.target)?.onHoverStop());
+        events.on("pointerleave", (e) => {
+            const node = containerToNode(e.target);
+            if (!node) return
+            if (node.key === this.secondarySelected) return
+            node.stopHoverEffects()
+        });
 
         events.on("rightdown", (e) => { this.didRightClickOnNode = true; this.onNodeSecondaryDown(containerToNode(e.target)) });
         events.on("rightup", (e) => this.onNodeSecondaryUp(containerToNode(e.target)));
@@ -220,6 +227,7 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
         if (this.secondarySelected) {
             const secondary = this.keyToNode(this.secondarySelected)
             secondary.setSecondary(false)
+            secondary.stopHoverEffects()
         }
         this.secondarySelected = node.key
         node.setSecondary(true)
