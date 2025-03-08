@@ -46,7 +46,7 @@ export default function LayoutGroup() {
             <Heading as="h4" size="1">
                 Dagre
             </Heading>
-            <LayoutControls layout={dagreLayout} graph={graphi.graph} />
+            <LayoutControls layout={dagreLayout} graphi={graphi} />
 
             <Heading as="h4" size="1">
                 Force

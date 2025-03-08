@@ -1,11 +1,14 @@
 import Graph from "graphology";
 import dagre from "@dagrejs/dagre";
 import { Layout } from "@/graph/types";
+import { Graphi } from "@/Graphi";
 
 
 export class DagreLayout implements Layout<dagre.configUnion> {
-    public run(graph: Graph, options?: dagre.configUnion) {
+    public run(graphi: Graphi, options?: dagre.configUnion) {
+        const graph = graphi.graph
         var g = new dagre.graphlib.Graph();
+
         g.setGraph({});
         g.setDefaultEdgeLabel(function () { return {}; });
         graph.forEachNode(n => {

@@ -65,7 +65,7 @@ export class PixiEdge {
 
     // 2) Clear & redraw your arrow shape pointing UP in local coords
     this.arrow.clear();
-    this.arrow.beginFill(0xffffff);
+    this.arrow.fill({ color: "#FFFFFF", alpha: this.attributes.state === "normal" ? 1 : 0.5 });
     this.arrow.moveTo(0, 0);    // tip
     this.arrow.lineTo(-5, -15);
     this.arrow.lineTo(5, -15);

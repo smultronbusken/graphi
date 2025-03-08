@@ -1,3 +1,4 @@
+import { Graphi } from '@/Graphi';
 import { Attributes } from 'graphology-types';
 
 
@@ -10,7 +11,7 @@ export type BaseNodeAttributes = BaseAttributes & { x: number, y: number };
 export type BaseEdgeAttributes = BaseAttributes & { points?: { x: number, y: number }[] };
 
 export interface Layout<O> {
-    run(graph: Graph, options?: O): void
+    run(graphi: Graphi, options?: O): void
 }
 
 export interface SupervisedLayout<O> {

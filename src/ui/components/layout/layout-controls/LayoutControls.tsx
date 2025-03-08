@@ -1,14 +1,15 @@
 import { Button } from "@radix-ui/themes";
 import { Layout } from "@/graph/types";
+import { Graphi } from "@/Graphi";
 
 interface LayoutControlsProps {
     layout: Layout<any>;
-    graph: any; // replace with appropriate type if available
+    graphi: Graphi; 
 }
 
-export default function LayoutControls({ layout, graph }: LayoutControlsProps) {
+export default function LayoutControls({ layout, graphi }: LayoutControlsProps) {
     return (
-        <Button onClick={() => layout.run(graph)}>
+        <Button onClick={() => layout.run(graphi)}>
             Run
         </Button>
     );
