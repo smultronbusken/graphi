@@ -54,7 +54,9 @@ export class PixiNode {
     private hovering: boolean = false;
 
     public outlineFilter: OutlineFilter
+    public outlineFilterSecondary: OutlineFilter
     public outlineCircle: Graphics
+    public outlineCircleSecondary: Graphics
 
     constructor(public key: string, attributes: BaseNodeAttributes) {
 
@@ -88,6 +90,20 @@ export class PixiNode {
         this.circleContainer.addChild(this.outlineCircle);
         this.setSelected(false)
 
+        this.outlineFilterSecondary = new OutlineFilter({
+            thickness: 2,
+            alpha: 1,
+            color: 0x5b5bd6,
+            knockout: true  // <--- important!
+        });
+        this.outlineCircleSecondary = new Graphics();
+        this.outlineCircleSecondary.circle(0, 0, this._radius*1.1)
+            .fill({ color: 0xffffff, alpha: 1 });
+            this.outlineCircleSecondary.filters = [this.outlineFilterSecondary];
+        this.circleContainer.addChild(this.outlineCircleSecondary);
+        this.setSecondary(false)
+
+
 
         this.graphics.eventMode = "static";
         this.events = this.graphics;
@@ -100,6 +116,15 @@ export class PixiNode {
     public setSelected(selected: boolean) {
         this.outlineFilter.enabled = selected
         this.outlineCircle.visible = selected
+        if (selected) {
+
+        }
+    }
+
+
+    public setSecondary(selected: boolean) {
+        this.outlineFilterSecondary.enabled = selected
+        this.outlineCircleSecondary.visible = selected
         if (selected) {
 
         }

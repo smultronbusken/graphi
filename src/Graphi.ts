@@ -36,6 +36,7 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
 
     public selected: string[] = [];
     public secondarySelected: string | null = null;
+    public didRightClickOnNode: boolean = false;
 
     constructor(options: GraphOptions<NodeAttributes, EdgeAttributes>) {
 
@@ -58,9 +59,41 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
         this.drag.events.on("stop", (node: PixiNode, _) => this.onDragStop(node));
         this.drag.events.on("start", (node: PixiNode, _) => this.onDragStart(node));
 
-        input.keyboard.on("Escape", (_) => this.setSelected())
+        input.keyboard.on("Escape", (_) => {
+            this.setSelected()
+            if (this.secondarySelected) {
+                const secondary = this.keyToNode(this.secondarySelected)
+                secondary.setSecondary(false)
+                this.secondarySelected = null
+                this.events.emit("onSecondarySelectedChange", this.secondarySelected)
+            }
+        })
+
+        input.mouse.onDown("right", (e) => {
+            console.log(e)
+            if (this.secondarySelected && !this.didRightClickOnNode) {
+                const secondary = this.keyToNode(this.secondarySelected)
+                secondary.setSecondary(false)
+                this.secondarySelected = null
+                this.events.emit("onSecondarySelectedChange", this.secondarySelected)
+            }
+        })
+
+        input.mouse.onUp("right", (e) => {
+            this.didRightClickOnNode = false
+        })
+
+        input.mouse.onDown("left", (e) => {
+            if (this.secondarySelected) {
+                const secondary = this.keyToNode(this.secondarySelected)
+                secondary.setSecondary(false)
+                this.secondarySelected = null
+                this.events.emit("onSecondarySelectedChange", this.secondarySelected)
+            }
+        })
 
         this.setGraph(options.graph)
+
     }
 
     destroy() {
@@ -109,9 +142,10 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
 
         events.on("pointerenter", (e) => containerToNode(e.target)?.onHoverStart());
         events.on("mousedown", (e) => this.onNodeClick(containerToNode(e.target)));
-        events.on("rightdown", (e) => this.onNodeSecondaryUp(containerToNode(e.target)));
-        events.on("rightup", (e) => this.onNodeSecondaryDown(containerToNode(e.target)));
         events.on("pointerleave", (e) => containerToNode(e.target)?.onHoverStop());
+
+        events.on("rightdown", (e) => { this.didRightClickOnNode = true; this.onNodeSecondaryDown(containerToNode(e.target)) });
+        events.on("rightup", (e) => this.onNodeSecondaryUp(containerToNode(e.target)));
 
         this.nodeLayer.addChild(node.graphics);
         this.keyNodeMap.set(nodeKey, node);
@@ -182,12 +216,19 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
     }
 
     private onNodeSecondaryDown(node: PixiNode) {
+
+        if (this.secondarySelected) {
+            const secondary = this.keyToNode(this.secondarySelected)
+            secondary.setSecondary(false)
+        }
         this.secondarySelected = node.key
+        node.setSecondary(true)
         this.events.emit("onSecondarySelectedChange", this.secondarySelected)
     }
     private onNodeSecondaryUp(node: PixiNode) {
-        this.secondarySelected = null
-        this.events.emit("onSecondarySelectedChange", this.secondarySelected)
+        //node.setSecondary(false)
+        //this.secondarySelected = null
+        //this.events.emit("onSecondarySelectedChange", this.secondarySelected)
     }
 
 

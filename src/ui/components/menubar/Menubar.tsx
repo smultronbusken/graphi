@@ -25,8 +25,8 @@ const Menubar = () => {
 
   const hideAllExceptSelected = () => {
     graphi.hideAll();
-    if (graphi.selected)
-      graphi.expand(graphi.selected)
+    for(const selected of graphi.selected)
+      graphi.expand(selected)
   };
 
   const showAll = () => {

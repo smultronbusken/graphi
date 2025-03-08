@@ -32,8 +32,8 @@ export default function GraphiContextMenu({ children }: GraphiContextMenuProps) 
 
 
     return (
-        <ContextMenu.Root>
-            <ContextMenu.Trigger>{children}</ContextMenu.Trigger>
+        <ContextMenu.Root modal={false}>
+            <ContextMenu.Trigger >{children}</ContextMenu.Trigger>
             <ContextMenu.Content variant="solid" size="1" className="data-[state=closed]:none">
                 <ContextMenu.Item shortcut="⌘ E">Edit {secondary}</ContextMenu.Item>
                 <ContextMenu.Item shortcut="⌘ D">Duplicate</ContextMenu.Item>

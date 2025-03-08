@@ -8,7 +8,13 @@ canvas {
 .rt-ContextMenuContent[data-state="closed"] {
     animation-name: none !important;
     animation-duration: 0ms !important;
-    animation-iteration-count: 1 !important;
+    animation-iteration-count: 0 !important;
     animation-timing-function: linear !important;
-  }
-  
+}
+
+.rt-ContextMenuContent[data-state="open"] {
+    animation-name: none !important;
+    animation-duration: 0ms !important;
+    animation-iteration-count: 0 !important;
+    animation-timing-function: linear !important;
+}
