@@ -12,6 +12,7 @@ import { loadAssets } from "./util/asset-loader.ts"
 import generateGraph from "./util/generate-graph.ts"
 import { Theme } from "@radix-ui/themes"
 import input from "./input/input.ts"
+import createBackground from "./pixi/background.ts"
 
 export type PixiContextData = {
   pixi: Application<Renderer>
@@ -56,6 +57,7 @@ const Root = () => {
         camera: camera,
         pixi: app
       }
+      createBackground(app)
       const graph = await generateGraph("animals")
       const pixiGraph = new Graphi({
         graph: graph,

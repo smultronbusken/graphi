@@ -2,6 +2,10 @@
 	height: var(--header-height);
 }
 
+.default-font {
+	--default-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI (Custom)', Roboto, 'Helvetica Neue', 'Open Sans (Custom)', system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji'
+}
+
 .HeaderInner {
 	min-width: 320px;
 	position: fixed;
@@ -22,7 +26,7 @@
 	transition-duration: 30ms, 120ms;
 }
 
-.HeaderRoot:not(.ghost[data-scroll-state="at-top"]) > .HeaderInner {
+.HeaderRoot:not(.ghost[data-scroll-state="at-top"])>.HeaderInner {
 	backdrop-filter: blur(64px);
 	box-shadow: 0 1px var(--gray-a4);
 }
@@ -115,13 +119,16 @@
 }
 
 @media (min-width: 370px) {
+
 	.HeaderProductLinkInner,
 	.HeaderProductLinkInnerHidden {
 		padding-left: var(--space-2);
 		padding-right: var(--space-2);
 	}
 }
+
 @media (min-width: 440px) {
+
 	.HeaderProductLinkInner,
 	.HeaderProductLinkInnerHidden {
 		padding-left: 10px;

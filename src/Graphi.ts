@@ -6,6 +6,7 @@ import { PixiNode } from './pixi/components/node';
 import input from '@/input/input';
 import { BaseEdgeAttributes, BaseNodeAttributes, State } from '@/graph/types';
 import EventEmitter from 'events';
+import { AsciiFilter, BulgePinchFilter, CRTFilter } from 'pixi-filters';
 
 
 export interface GraphOptions<NodeAttributes extends BaseNodeAttributes = BaseNodeAttributes, EdgeAttributes extends BaseEdgeAttributes = BaseEdgeAttributes> {
@@ -44,6 +45,12 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
 
         this.container.addChild(this.edgeLayer);
         this.container.addChild(this.nodeLayer);
+
+        const asciiFilter = new CRTFilter({ vignetting: 0 })
+        this.edgeLayer.filters = [asciiFilter]
+
+        const asciiFilter2 = new CRTFilter({ vignetting: 0 })
+        this.nodeLayer.filters = [asciiFilter2]
 
         this.drag = options.drag;
         this.drag.events.on("move", this.onDragMove.bind(this));

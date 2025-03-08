@@ -74,7 +74,7 @@ export class PixiNode {
         this.graphics.eventMode = "static";
         this.events = this.graphics;
 
-        this.circleContainer.cacheAsTexture(true)
+        //this.circleContainer.cacheAsTexture(true)
         this.attributes = attributes
         this.setAttributes(attributes)
     }

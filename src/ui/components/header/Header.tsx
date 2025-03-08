@@ -1,5 +1,5 @@
 import {
-    Button,
+  Button,
   Container,
   DropdownMenu,
   Flex,
@@ -31,12 +31,14 @@ export default function Header() {
           pl="4"
         >
           <Share1Icon />
-          <Heading as="h1" size="3" className="header-heading">
+
+          <Heading as="h1" size="3" className="default-font" >
             gra
           </Heading>
-          <Text className="header-text" weight={"light"}>
+          <Text className="default-font" weight={"light"}>
             phi
           </Text>
+
           <Separator orientation="vertical" ml="4" mr="4" />
           <Menubar />
         </Flex>

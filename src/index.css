@@ -2,11 +2,50 @@ html {
     overflow: scroll;
     overflow-x: hidden;
 }
+
 ::-webkit-scrollbar {
-    width: 0;  /* Remove scrollbar space */
-    background: transparent;  /* Optional: just make scrollbar invisible */
+    width: 0;
+    /* Remove scrollbar space */
+    background: transparent;
+    /* Optional: just make scrollbar invisible */
 }
+
 /* Optional: show position indicator in red */
 ::-webkit-scrollbar-thumb {
     background: #FF0000;
 }
+
+@font-face {
+    font-family: "Gamer";
+    src: url("/fonts/Gamer.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "monaco";
+    src: url("/fonts/monaco.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+/* If you're using Radix Themes, you might have a .radix-themes wrapper */
+/* Or you can use :root if you prefer, but here's the .radix-themes example: */
+.radix-themes {
+    /* Use your newly registered font */
+    --fontScale: 1;
+
+    --font-size-1: calc(12px* var(--scaling)*var(--fontScale));
+    --font-size-2: calc(14px* var(--scaling)*var(--fontScale));
+    --font-size-3: calc(16px* var(--scaling)*var(--fontScale));
+    --font-size-4: calc(18px* var(--scaling)*var(--fontScale));
+    --font-size-5: calc(20px* var(--scaling)*var(--fontScale));
+    --font-size-6: calc(24px* var(--scaling)*var(--fontScale));
+    --font-size-7: calc(28px* var(--scaling)*var(--fontScale));
+    --font-size-8: calc(35px* var(--scaling)*var(--fontScale));
+    --font-size-9: calc(60px* var(--scaling)*var(--fontScale));
+}
+
