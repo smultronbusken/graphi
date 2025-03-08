@@ -16,6 +16,7 @@ export interface GraphOptions<NodeAttributes extends BaseNodeAttributes = BaseNo
 
 type GraphiEvents = {
     onSelectedChange: [string[]];
+    onSecondarySelectedChange: [string | null];
 };
 
 // TODO make a cache of graph.nodes() and only update it when any nodes has been added or removed as the serach suggestion boxes ui uses that alot i think(?)
@@ -34,6 +35,7 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
     public events: EventEmitter<GraphiEvents> = new EventEmitter();
 
     public selected: string[] = [];
+    public secondarySelected: string | null = null;
 
     constructor(options: GraphOptions<NodeAttributes, EdgeAttributes>) {
 
@@ -107,6 +109,8 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
 
         events.on("pointerenter", (e) => containerToNode(e.target)?.onHoverStart());
         events.on("mousedown", (e) => this.onNodeClick(containerToNode(e.target)));
+        events.on("rightdown", (e) => this.onNodeSecondaryUp(containerToNode(e.target)));
+        events.on("rightup", (e) => this.onNodeSecondaryDown(containerToNode(e.target)));
         events.on("pointerleave", (e) => containerToNode(e.target)?.onHoverStop());
 
         this.nodeLayer.addChild(node.graphics);
@@ -176,6 +180,17 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
             }
         });
     }
+
+    private onNodeSecondaryDown(node: PixiNode) {
+        this.secondarySelected = node.key
+        this.events.emit("onSecondarySelectedChange", this.secondarySelected)
+    }
+    private onNodeSecondaryUp(node: PixiNode) {
+        this.secondarySelected = null
+        this.events.emit("onSecondarySelectedChange", this.secondarySelected)
+    }
+
+
 
     private onNodeClick(node: PixiNode) {
         const attr = this.graph.getNodeAttributes(node.key)
