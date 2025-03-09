@@ -5,6 +5,7 @@
       { "key": "Decision", "attributes": { "x": 400, "y": 250, "type": "bird" } },
       { "key": "OptionA", "attributes": { "x": 250, "y": 350, "type": "bunny" } },
       { "key": "OptionB", "attributes": { "x": 550, "y": 350, "type": "bunny" } },
+      { "key": "Shortcut", "attributes": { "x": 50, "y": 350, "type": "bunny" } },
       { "key": "End", "attributes": { "x": 400, "y": 450, "type": "bird" } }
     ],
     "edges": [
@@ -13,7 +14,8 @@
       { "source": "Decision", "target": "OptionA" },
       { "source": "Decision", "target": "OptionB" },
       { "source": "OptionA", "target": "End" },
-      { "source": "OptionB", "target": "End" }
+      { "source": "OptionB", "target": "End" },
+      { "source": "Shortcut", "target": "End" }
     ]
   }
   

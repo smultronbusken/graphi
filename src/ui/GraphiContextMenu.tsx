@@ -1,4 +1,5 @@
 // GraphiContextMenu.tsx
+import { singleSource } from "@/graph/path";
 import { GraphiContext } from "@/main";
 import { ContextMenu } from "@radix-ui/themes";
 import React, { useContext, useEffect, useState } from "react";
@@ -49,7 +50,15 @@ export default function GraphiContextMenu({ children }: GraphiContextMenuProps) 
             <ContextMenu.Content variant="solid" size="1" className="data-[state=closed]:none">
                 {secondary ? (<>
                     <ContextMenu.Item color="indigo">Edit </ContextMenu.Item>
-                    <ContextMenu.Item color="indigo">All paths</ContextMenu.Item>
+                    <ContextMenu.Item color="indigo" onClick={() => {
+                        const paths = singleSource(secondary, graphi.graph)
+                        
+                        graphi.hideAll()
+                        for(const path of Object.values(paths)) {
+
+                            graphi.expandPath(path)
+                        }
+                    }}>All paths</ContextMenu.Item>
 
                     <ContextMenu.Separator />
                 </>) : <></>}
