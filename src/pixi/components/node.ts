@@ -169,7 +169,6 @@ export class PixiNode {
     }
 
     public setScale(newScale: number, duration = 0.1) {
-        console.log(`setting scale from ${this.circleContainer.scale.x} to ${newScale} ${this.key}`)
         animate(
             this.circleContainer.scale,
             { x: newScale, y: newScale },
@@ -213,7 +212,6 @@ export class PixiNode {
                 this.circleContainer.filters = [this.glowFilter];
                 break;
             case "inactive":
-                console.log("hej")
                 this.setScale(this.SCALE.INACTIVE);
                 animate(this.graphics, { alpha: 0.5 }, { duration: 0.4 });
                 this.circleContainer.filters = [this.grayscaleFilter];

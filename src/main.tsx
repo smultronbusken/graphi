@@ -13,6 +13,7 @@ import generateGraph from "./util/generate-graph.ts"
 import { Theme } from "@radix-ui/themes"
 import input from "./input/input.ts"
 import createBackground from "./pixi/background.ts"
+import QueryManager from "./graph/QueryManager.ts"
 
 export type PixiContextData = {
   pixi: Application<Renderer>

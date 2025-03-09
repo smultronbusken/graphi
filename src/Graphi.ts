@@ -8,6 +8,7 @@ import { BaseEdgeAttributes, BaseNodeAttributes, State } from '@/graph/types';
 import EventEmitter from 'events';
 import { AsciiFilter, BulgePinchFilter, CRTFilter } from 'pixi-filters';
 import { CircleBackslashIcon } from '@radix-ui/react-icons';
+import QueryManager from './graph/QueryManager';
 
 
 export interface GraphOptions<NodeAttributes extends BaseNodeAttributes = BaseNodeAttributes, EdgeAttributes extends BaseEdgeAttributes = BaseEdgeAttributes> {
@@ -38,6 +39,8 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
     public selected: string[] = [];
     public secondarySelected: string | null = null;
 
+    public queries: QueryManager;
+
     constructor(options: GraphOptions<NodeAttributes, EdgeAttributes>) {
 
         this.container = new Container({ label: "graph" });
@@ -64,6 +67,7 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
             this.resetSecondary()
         })
 
+        this.queries = new QueryManager()
         this.setGraph(options.graph)
     }
 
@@ -93,8 +97,6 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
                 this.edgeLayer.removeChild(this.edgeLayer.children[0]);
             }
             for (const pixiNode of this.keyNodeMap.values()) {
-                console.log(pixiNode)
-
                 pixiNode.events.removeAllListeners()
             }
             this.resetSecondary()
@@ -111,6 +113,7 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
         graph.on('edgeDropped', this.onEdgeDropped.bind(this));
         this.graph = graph;
 
+        this.queries.setGraph(graph)
     }
 
     private onNodeDropped(payload: { key: string, attributes: NodeAttributes }) {

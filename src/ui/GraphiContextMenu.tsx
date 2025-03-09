@@ -1,5 +1,5 @@
 // GraphiContextMenu.tsx
-import { singleSource } from "@/graph/path";
+import { SingleSourceQuery } from "@/graph/QueryManager";
 import { GraphiContext } from "@/main";
 import { ContextMenu } from "@radix-ui/themes";
 import React, { useContext, useEffect, useState } from "react";
@@ -53,13 +53,7 @@ export default function GraphiContextMenu({ children }: GraphiContextMenuProps) 
                     <ContextMenu.Item color="indigo" onClick={() => graphi.hide(secondary)}>Hide</ContextMenu.Item>
                     <ContextMenu.Item color="indigo" onClick={() => graphi.expand(secondary)}>Expand</ContextMenu.Item>
                     <ContextMenu.Item color="indigo" onClick={() => {
-                        const paths = singleSource(secondary, graphi.graph)
-                        graphi.setSelected(secondary)
-                        graphi.hideAll()
-                        graphi.expand(secondary)
-                        for (const path of Object.values(paths)) {
-                            graphi.expandPath(path)
-                        }
+                        graphi.queries.runQuery(SingleSourceQuery(secondary))
                     }}>All paths</ContextMenu.Item>
 
                     <ContextMenu.Separator />

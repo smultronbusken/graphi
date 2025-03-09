@@ -18,13 +18,6 @@ export default function LayoutGroup() {
     const forceLayout = new ForceLayout();
     const forceLayoutOptions: ForceLayoutOption = {
         maxIterations: 1,
-        settings: {
-            attraction: 0,
-            repulsion: 1,
-            gravity: 0.0001,
-            inertia: 0,
-            maxMove: 20,
-        },
         isNodeFixed: (n, a) => graphi.drag.draggingNode?.key === n,
         shouldSkipNode: (n, a) => a.hidden,
         shouldSkipEdge: (edgeKey, _attr, source, target, sourceAttr, targetAttr) =>

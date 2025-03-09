@@ -8,6 +8,7 @@ import { NodeAttributes } from "./components/node/NodeAttributes";
 import SearchNode from "./components/search-node/SearchNode";
 import { SideNav } from "./components/side-nav/SideNav";
 import { Search } from "./components/search/Search";
+import QueryView from "./components/query-view/QueryView";
 
 export default function Overlay() {
     const graphi = useContext(GraphiContext);
@@ -38,6 +39,10 @@ export default function Overlay() {
                         </Flex>
                     </Box>
                 </Grid>
+
+                <Box mb="4" pr="4">
+                    <QueryView />
+                </Box>
             </Box>
         </SideNav>
     );
