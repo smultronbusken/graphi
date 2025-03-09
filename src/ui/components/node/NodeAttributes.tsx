@@ -30,7 +30,6 @@ export function NodeAttributes() {
 
   useEffect(() => {
     function handleSelectedChange(keys: string[]) {
-      console.log(keys)
       if (keys.length === 0) {
         setNode(undefined)
         return

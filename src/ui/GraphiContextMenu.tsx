@@ -13,6 +13,8 @@ export default function GraphiContextMenu({ children }: GraphiContextMenuProps) 
     const [selected, setSelected] = useState<string[]>([]);
     const [secondary, setScondary] = useState<string | null>(null);
 
+    const [shouldReset, setShouldReset] = useState<boolean>(false);
+
     if (!graphi) return "loading";
 
     useEffect(() => {
@@ -20,8 +22,8 @@ export default function GraphiContextMenu({ children }: GraphiContextMenuProps) 
             setSelected(selected)
         }
         const handleSecondaryChange = (secondary: string | null) => {
+            setShouldReset(false)
             setScondary(secondary)
-            console.log(secondary)
         }
         graphi.events.on("onSelectedChange", handleSelectedChange);
         graphi.events.on("onSecondarySelectedChange", handleSecondaryChange);
@@ -32,13 +34,25 @@ export default function GraphiContextMenu({ children }: GraphiContextMenuProps) 
 
 
     return (
-        <ContextMenu.Root modal={false}>
+        <ContextMenu.Root modal={false} onOpenChange={(open) => {
+            if (open) {
+                setShouldReset(true)
+            }
+            if (!open) {
+                if (shouldReset) {
+                    graphi.resetSecondary()
+                }
+                return
+            }
+        }}>
             <ContextMenu.Trigger >{children}</ContextMenu.Trigger>
             <ContextMenu.Content variant="solid" size="1" className="data-[state=closed]:none">
-                <ContextMenu.Item shortcut="⌘ E">Edit {secondary}</ContextMenu.Item>
-                <ContextMenu.Item shortcut="⌘ D">Duplicate</ContextMenu.Item>
-                <ContextMenu.Separator />
-                <ContextMenu.Item shortcut="⌘ N">Archive</ContextMenu.Item>
+                {secondary ? (<>
+                    <ContextMenu.Item color="indigo">Edit </ContextMenu.Item>
+                    <ContextMenu.Item color="indigo">All paths</ContextMenu.Item>
+
+                    <ContextMenu.Separator />
+                </>) : <></>}
 
                 <ContextMenu.Sub>
                     <ContextMenu.SubTrigger>Path</ContextMenu.SubTrigger>
@@ -46,14 +60,13 @@ export default function GraphiContextMenu({ children }: GraphiContextMenuProps) 
                         <ContextMenu.Item>Find between selected </ContextMenu.Item>
                     </ContextMenu.SubContent>
                 </ContextMenu.Sub>
+                {secondary ? (<>
+                    <ContextMenu.Separator />
+                    <ContextMenu.Item color="red" onClick={() => graphi.graph.dropNode(secondary)}>
+                        Delete
+                    </ContextMenu.Item>
+                </>) : <></>}
 
-                <ContextMenu.Separator />
-                <ContextMenu.Item>Share</ContextMenu.Item>
-                <ContextMenu.Item>Add to favorites</ContextMenu.Item>
-                <ContextMenu.Separator />
-                <ContextMenu.Item shortcut="⌘ ⌫" color="red">
-                    Delete
-                </ContextMenu.Item>
             </ContextMenu.Content>
         </ContextMenu.Root>
     );

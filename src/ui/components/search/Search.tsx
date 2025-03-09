@@ -70,7 +70,6 @@ export const Search = () => {
                     >
                         <DialogPrimitive.Content
                             onEscapeKeyDown={() => {
-                                console.log("hej")
                                 if (inputRef.current?.value === "") {
                                     setDialogOpen(false);
                                 } else {
