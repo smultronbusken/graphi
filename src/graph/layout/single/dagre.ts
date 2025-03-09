@@ -13,7 +13,7 @@ export class DagreLayout implements Layout<dagre.configUnion> {
         g.setDefaultEdgeLabel(function () { return {}; });
         graph.forEachNode((n, attr) => {
             if (attr.hidden) return
-            g.setNode(n, { width: 40, height: 40 })
+            g.setNode(n, { width: 50, height: 80 })
         })
         graph.forEachEdge((n, atr, s, t, sa, ta) => {
             if (sa.hidden || ta.hidden) return

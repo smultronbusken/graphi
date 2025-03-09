@@ -49,13 +49,15 @@ export default function GraphiContextMenu({ children }: GraphiContextMenuProps) 
             <ContextMenu.Trigger >{children}</ContextMenu.Trigger>
             <ContextMenu.Content variant="solid" size="1" className="data-[state=closed]:none">
                 {secondary ? (<>
-                    <ContextMenu.Item color="indigo">Edit </ContextMenu.Item>
+                    <ContextMenu.Item color="indigo">Info / Edit</ContextMenu.Item>
+                    <ContextMenu.Item color="indigo" onClick={() => graphi.hide(secondary)}>Hide</ContextMenu.Item>
+                    <ContextMenu.Item color="indigo" onClick={() => graphi.expand(secondary)}>Expand</ContextMenu.Item>
                     <ContextMenu.Item color="indigo" onClick={() => {
                         const paths = singleSource(secondary, graphi.graph)
-                        
+                        graphi.setSelected(secondary)
                         graphi.hideAll()
-                        for(const path of Object.values(paths)) {
-
+                        graphi.expand(secondary)
+                        for (const path of Object.values(paths)) {
                             graphi.expandPath(path)
                         }
                     }}>All paths</ContextMenu.Item>
@@ -66,7 +68,7 @@ export default function GraphiContextMenu({ children }: GraphiContextMenuProps) 
                 <ContextMenu.Sub>
                     <ContextMenu.SubTrigger>Path</ContextMenu.SubTrigger>
                     <ContextMenu.SubContent>
-                        <ContextMenu.Item>Find between selected </ContextMenu.Item>
+                        <ContextMenu.Item color="amber">Find between selected </ContextMenu.Item>
                     </ContextMenu.SubContent>
                 </ContextMenu.Sub>
                 {secondary ? (<>

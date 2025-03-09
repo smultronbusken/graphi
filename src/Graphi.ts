@@ -7,6 +7,7 @@ import input from '@/input/input';
 import { BaseEdgeAttributes, BaseNodeAttributes, State } from '@/graph/types';
 import EventEmitter from 'events';
 import { AsciiFilter, BulgePinchFilter, CRTFilter } from 'pixi-filters';
+import { CircleBackslashIcon } from '@radix-ui/react-icons';
 
 
 export interface GraphOptions<NodeAttributes extends BaseNodeAttributes = BaseNodeAttributes, EdgeAttributes extends BaseEdgeAttributes = BaseEdgeAttributes> {
@@ -84,12 +85,20 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
         if (this.graph) {
             graph.off('nodeAttributesUpdated', this.onNodeAttributesUpdate.bind(this));
             graph.off('edgeAttributesUpdated', this.onEdgeAttributesUpdate.bind(this));
+
             while (this.nodeLayer.children[0]) {
                 this.nodeLayer.removeChild(this.nodeLayer.children[0]);
             }
             while (this.edgeLayer.children[0]) {
                 this.edgeLayer.removeChild(this.edgeLayer.children[0]);
             }
+            for (const pixiNode of this.keyNodeMap.values()) {
+                console.log(pixiNode)
+
+                pixiNode.events.removeAllListeners()
+            }
+            this.resetSecondary()
+            this.setSelected()
             this.keyNodeMap.clear()
             this.edgeKeyMap.clear()
         }
@@ -107,6 +116,7 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
     private onNodeDropped(payload: { key: string, attributes: NodeAttributes }) {
         const { key, attributes } = payload
         const pixiNode = this.keyToNode(key)
+        pixiNode.events.removeAllListeners()
         this.nodeLayer.removeChild(pixiNode.graphics);
     }
     private onEdgeDropped(payload: { key: string, attributes: EdgeAttributes }) {
@@ -216,6 +226,9 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
     private onNodeSecondaryUp(node: PixiNode) {
         this.secondarySelected = node.key
         node.setSecondary(true)
+        if (input.keyboard.isPressed("ShiftLeft")) {
+            this.addSelected(node.key)
+        }
         this.events.emit("onSecondarySelectedChange", this.secondarySelected)
     }
 
@@ -311,6 +324,16 @@ export class Graphi<NodeAttributes extends BaseNodeAttributes = BaseNodeAttribut
             }
         });
 
+    }
+
+    public hide(key: string) {
+        this.graph.setNodeAttribute(key, "hidden", true);
+        this.graph.setNodeAttribute(key, "state", "inactive");
+
+        this.graph.forEachEdge(key, (edgeKey) => {
+            this.graph.setEdgeAttribute(edgeKey, "state", "inactive");
+            this.graph.setEdgeAttribute(edgeKey, "hidden", true);
+        });
     }
 
     public hideAll() {
