@@ -9,7 +9,7 @@ import { BaseEdgeAttributes, BaseNodeAttributes, State } from '@/graph/types';
 
 export type GraphQuery = {
     name: string;
-    execute(graph: GraphiGraph): QueryResult[];
+    execute(graph: GraphiGraph, queryManager: QueryManager): QueryResult[];
 }
 
 export type QueryResult = {
@@ -38,7 +38,7 @@ export default class QueryManager extends EventEmitter<QueryManagerEvents> {
     }
 
     public runQuery(query: GraphQuery): QueryResult[] {
-        const results = query.execute(this.graph);
+        const results = query.execute(this.graph, this);
         this.currentQuery = query
         this.currentResults = results
         this.emit("onQueryComplete", query, results)
@@ -46,6 +46,7 @@ export default class QueryManager extends EventEmitter<QueryManagerEvents> {
     }
 
 }
+
 export const AllSimpleEdgePathsQuery = (source: string, target: string): GraphQuery => ({
     name: `AllSimpleEdgePaths:${source}->${target}`,
     execute(graph: GraphiGraph): QueryResult[] {
@@ -70,14 +71,68 @@ export const ShortestPathQuery = (source: string, target: string): GraphQuery =>
         if (path === null) {
             return [];
         }
+        const edges = new Set<string>()
+        for (let i = 1; i < path.length; i++) {
+            const lastStep = path[i - 1]!
+            const step = path[i]!
+            const edge = graph.edge(lastStep, step)
+            if (!edge) {
+                throw new Error(`Expected edge ${lastStep}->${step} to exist for query`)
+            }
+            edges.add(edge)
+        }
         const nodes = new Set(path);
         return [{
             nodes,
-            edges: new Set<string>(),
+            edges,
             label: `Shortest Path: ${path.join(" -> ")}`
         }];
     }
 });
+
+export const ShortestPathBetweenMany = (nodes: string[]): GraphQuery => ({
+    name: `ShortestPathBetweenMany:${nodes.join(",")}`,
+    execute(graph: GraphiGraph, queryManager: QueryManager): QueryResult[] {
+
+        let result: QueryResult = {
+            label: `ShortestPathBetweenMany:${nodes.join(",")}`,
+            edges: new Set(),
+            nodes: new Set(),
+        }
+        for (let i = 1; i < nodes.length; i++) {
+            const source = nodes[i - 1]
+            const target = nodes[i]
+            const shortestPath = queryManager.runQuery(ShortestPathQuery(source, target));
+            if (shortestPath.length === 0) {
+                // A path must exist between every node
+                return []
+            }
+            result.edges = new Set([...shortestPath[0].edges, ...result.edges]);
+            result.nodes = new Set([...shortestPath[0].nodes, ...result.nodes]);
+        }
+
+        return [result]
+    }
+})
+
+export const allRelevantPaths = (center: string): GraphQuery => ({
+    name: `AllRelevantPaths:${center}`,
+    execute(graph: AbstractGraph<BaseNodeAttributes, BaseEdgeAttributes>, queryManager): QueryResult[] {
+        let results: QueryResult[] = []
+
+        const pathsStartingFromCenter = queryManager.runQuery(SingleSourceQuery(center));
+        results = results.concat(...pathsStartingFromCenter)
+
+        graph.forEachNode((node) => {
+            const shortestPath = queryManager.runQuery(ShortestPathQuery(node, center));
+            results.push(...shortestPath)
+        })
+
+        return results
+    }
+}
+)
+
 
 export const SingleSourceQuery = (source: string): GraphQuery => ({
     name: `SingleSource:${source}`,
@@ -86,6 +141,7 @@ export const SingleSourceQuery = (source: string): GraphQuery => ({
 
         const paths = graphologySingleSource(graph, source);
         for (const [target, path] of Object.entries(paths)) {
+            if (path.length === 1) continue;
             const edges: string[] = []
             for (let i = 1; i < path.length; i++) {
                 const lastStep = path[i - 1]!
