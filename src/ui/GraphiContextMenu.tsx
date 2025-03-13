@@ -1,5 +1,5 @@
 // GraphiContextMenu.tsx
-import { SingleSourceQuery } from "@/graph/QueryManager";
+import { AllPathsBetweenManyQuery, AllRelevantPathsQuery, ShortestPathBetweenManyQuery, SingleSourceQuery } from "@/graph/QueryManager";
 import { GraphiContext } from "@/main";
 import { ContextMenu } from "@radix-ui/themes";
 import React, { useContext, useEffect, useState } from "react";
@@ -54,7 +54,10 @@ export default function GraphiContextMenu({ children }: GraphiContextMenuProps) 
                     <ContextMenu.Item color="indigo" onClick={() => graphi.expand(secondary)}>Expand</ContextMenu.Item>
                     <ContextMenu.Item color="indigo" onClick={() => {
                         graphi.queries.runQuery(SingleSourceQuery(secondary))
-                    }}>All paths</ContextMenu.Item>
+                    }}>Path as Parent</ContextMenu.Item>
+                    <ContextMenu.Item color="indigo" onClick={() => {
+                        graphi.queries.runQuery(AllRelevantPathsQuery(secondary))
+                    }}>Relevant paths</ContextMenu.Item>
 
                     <ContextMenu.Separator />
                 </>) : <></>}
@@ -62,7 +65,13 @@ export default function GraphiContextMenu({ children }: GraphiContextMenuProps) 
                 <ContextMenu.Sub>
                     <ContextMenu.SubTrigger>Path</ContextMenu.SubTrigger>
                     <ContextMenu.SubContent>
-                        <ContextMenu.Item color="amber">Find between selected </ContextMenu.Item>
+                        <ContextMenu.Item color="amber"onClick={() => {
+                        graphi.queries.runQuery(ShortestPathBetweenManyQuery(graphi.selected))
+                    }} >Shortest path between </ContextMenu.Item>
+                                                <ContextMenu.Item color="amber"onClick={() => {
+                        graphi.queries.runQuery(AllPathsBetweenManyQuery(graphi.selected))
+                    }} >ALL paths between </ContextMenu.Item>
+                        
                     </ContextMenu.SubContent>
                 </ContextMenu.Sub>
                 {secondary ? (<>
